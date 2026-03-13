@@ -101,6 +101,7 @@ h1{
   height:36px;
   cursor:pointer;
   font-size:18px;
+  flex:0 0 auto;
 }
 .speak-btn:hover{background:#fafafa}
 .word-grid{
@@ -139,6 +140,7 @@ h1{
 
 <script>
 let rawData = [];
+
 let state = {
   book: null,
   level: null,
@@ -158,9 +160,9 @@ function parseCSV(text){
   let cell = "";
   let inQuotes = false;
 
-  for(let i=0;i<text.length;i++){
+  for(let i = 0; i < text.length; i++){
     const char = text[i];
-    const next = text[i+1];
+    const next = text[i + 1];
 
     if(char === '"'){
       if(inQuotes && next === '"'){
@@ -169,13 +171,13 @@ function parseCSV(text){
       }else{
         inQuotes = !inQuotes;
       }
-    }else if(char === ',' && !inQuotes){
+    }else if((char === ',' || char === '\t') && !inQuotes){
       row.push(cell);
       cell = "";
     }else if((char === '\n' || char === '\r') && !inQuotes){
       if(char === '\r' && next === '\n') i++;
       row.push(cell);
-      if(row.some(v => v !== "")){
+      if(row.some(v => String(v).trim() !== "")){
         rows.push(row);
       }
       row = [];
@@ -194,11 +196,20 @@ function parseCSV(text){
 }
 
 function normalizeHeader(v){
-  return (v || "").trim();
+  return String(v || "").replace(/\uFEFF/g, "").trim();
+}
+
+function escapeHtml(text){
+  return String(text || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function getUnique(arr, key){
-  return [...new Set(arr.map(x => x[key]).filter(Boolean))];
+  return [...new Set(arr.map(x => String(x[key] || "").trim()).filter(Boolean))];
 }
 
 function speakWord(word){
@@ -223,7 +234,10 @@ function speakWord(word){
       voices.find(v => v.lang.startsWith("en")) ||
       voices[0];
 
-    if (voice) u.voice = voice;
+    if (voice) {
+      u.voice = voice;
+    }
+
     synth.speak(u);
   };
 
@@ -274,6 +288,7 @@ function renderPath(){
 
 function renderBooks(){
   const books = getUnique(rawData, "교재");
+
   if(!books.length){
     app.innerHTML = `<div class="empty">데이터가 없습니다.</div>`;
     return;
@@ -282,7 +297,7 @@ function renderBooks(){
   app.innerHTML = `
     <div class="grid">
       ${books.map(book => `
-        <div class="card" onclick="selectBook(${JSON.stringify(book)})">${book}</div>
+        <div class="card" onclick='selectBook(${JSON.stringify(book)})'>${escapeHtml(book)}</div>
       `).join("")}
     </div>
   `;
@@ -292,10 +307,15 @@ function renderLevels(){
   const rows = rawData.filter(x => x["교재"] === state.book);
   const levels = getUnique(rows, "레벨");
 
+  if(!levels.length){
+    app.innerHTML = `<div class="empty">해당 교재의 레벨 데이터가 없습니다.</div>`;
+    return;
+  }
+
   app.innerHTML = `
     <div class="grid">
       ${levels.map(level => `
-        <div class="card" onclick="selectLevel(${JSON.stringify(level)})">${level}</div>
+        <div class="card" onclick='selectLevel(${JSON.stringify(level)})'>${escapeHtml(level)}</div>
       `).join("")}
     </div>
   `;
@@ -308,10 +328,15 @@ function renderSections(){
   );
   const sections = getUnique(rows, "구간");
 
+  if(!sections.length){
+    app.innerHTML = `<div class="empty">해당 레벨의 구간 데이터가 없습니다.</div>`;
+    return;
+  }
+
   app.innerHTML = `
     <div class="grid">
       ${sections.map(section => `
-        <div class="card" onclick="selectSection(${JSON.stringify(section)})">${section}</div>
+        <div class="card" onclick='selectSection(${JSON.stringify(section)})'>${escapeHtml(section)}</div>
       `).join("")}
     </div>
   `;
@@ -323,24 +348,21 @@ function renderChapters(){
     x["레벨"] === state.level &&
     x["구간"] === state.section
   );
-  const chapters = getUnique(rows, "Chapter").sort((a,b) => Number(a) - Number(b));
+
+  const chapters = getUnique(rows, "Chapter").sort((a, b) => Number(a) - Number(b));
+
+  if(!chapters.length){
+    app.innerHTML = `<div class="empty">해당 구간의 Chapter 데이터가 없습니다.</div>`;
+    return;
+  }
 
   app.innerHTML = `
     <div class="grid">
       ${chapters.map(ch => `
-        <div class="card" onclick="selectChapter(${JSON.stringify(ch)})">Chapter ${ch}</div>
+        <div class="card" onclick='selectChapter(${JSON.stringify(ch)})'>Chapter ${escapeHtml(ch)}</div>
       `).join("")}
     </div>
   `;
-}
-
-function escapeHtml(text){
-  return String(text)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
 }
 
 function renderWords(){
@@ -351,6 +373,11 @@ function renderWords(){
     x["Chapter"] === state.chapter
   );
 
+  if(!rows.length){
+    app.innerHTML = `<div class="empty">해당 Chapter의 단어 데이터가 없습니다.</div>`;
+    return;
+  }
+
   app.innerHTML = `
     <div class="word-grid">
       ${rows.map((row, i) => `
@@ -359,7 +386,7 @@ function renderWords(){
             <div class="word ${state.hideWord ? "hidden-word" : ""}">${i + 1}. ${escapeHtml(row["영어"])}</div>
             <div class="meaning ${state.hideMeaning ? "hidden-meaning" : ""}">${escapeHtml(row["뜻"])}</div>
           </div>
-          <button class="speak-btn" onclick="speakWord(${JSON.stringify(row["영어"])})">🔊</button>
+          <button class="speak-btn" onclick='speakWord(${JSON.stringify(row["영어"])})'>🔊</button>
         </div>
       `).join("")}
     </div>
@@ -370,11 +397,23 @@ function render(){
   renderControls();
   renderPath();
 
-  if(!state.book) return renderBooks();
-  if(!state.level) return renderLevels();
-  if(!state.section) return renderSections();
-  if(!state.chapter) return renderChapters();
-  return renderWords();
+  if(!state.book){
+    renderBooks();
+    return;
+  }
+  if(!state.level){
+    renderLevels();
+    return;
+  }
+  if(!state.section){
+    renderSections();
+    return;
+  }
+  if(!state.chapter){
+    renderChapters();
+    return;
+  }
+  renderWords();
 }
 
 function selectBook(book){
@@ -382,81 +421,106 @@ function selectBook(book){
   state.level = null;
   state.section = null;
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function selectLevel(level){
   state.level = level;
   state.section = null;
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function selectSection(section){
   state.section = section;
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function selectChapter(chapter){
   state.chapter = chapter;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function goHome(){
-  state = { book:null, level:null, section:null, chapter:null, hideWord:false, hideMeaning:false };
+  state = {
+    book: null,
+    level: null,
+    section: null,
+    chapter: null,
+    hideWord: false,
+    hideMeaning: false
+  };
   render();
 }
+
 function backToBooks(){
   state.book = null;
   state.level = null;
   state.section = null;
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function backToLevels(){
   state.level = null;
   state.section = null;
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function backToSections(){
   state.section = null;
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function backToChapters(){
   state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
   render();
 }
+
 function toggleMeaning(){
   state.hideMeaning = !state.hideMeaning;
-  renderWords();
   renderControls();
+  renderWords();
 }
+
 function toggleWord(){
   state.hideWord = !state.hideWord;
-  renderWords();
   renderControls();
+  renderWords();
 }
 
 async function loadData(){
   try{
-    const res = await fetch("./vocab.csv");
+    const res = await fetch("./vocab.csv?ts=" + Date.now());
     const text = await res.text();
 
     const rows = parseCSV(text);
+
     if(rows.length < 2){
       app.innerHTML = `<div class="empty">CSV 데이터가 비어있다.</div>`;
       return;
     }
 
     const headers = rows[0].map(normalizeHeader);
-
-    rawData = rows.slice(1)
-      .filter(r => r.some(v => String(v).trim() !== ""))
-      .map(r => {
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = (r[i] || "").trim());
-        return obj;
-      });
-
     const required = ["교재", "레벨", "구간", "Chapter", "영어", "뜻"];
     const missing = required.filter(x => !headers.includes(x));
 
@@ -464,6 +528,16 @@ async function loadData(){
       app.innerHTML = `<div class="empty">CSV 헤더가 맞지 않다.<br>누락: ${missing.join(", ")}</div>`;
       return;
     }
+
+    rawData = rows.slice(1)
+      .filter(r => r.some(v => String(v).trim() !== ""))
+      .map(r => {
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = String(r[i] || "").trim();
+        });
+        return obj;
+      });
 
     window.speechSynthesis?.getVoices();
     render();
