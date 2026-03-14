@@ -5,483 +5,457 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>서수원 JLS 단어장</title>
   <style>
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; }
+
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --sub:#6b7280;
+      --line:#e5e7eb;
+      --primary:#4f46e5;
+      --primary-soft:#eef2ff;
+      --shadow:0 12px 30px rgba(17,24,39,.08);
+      --shadow-soft:0 6px 18px rgba(17,24,39,.05);
     }
 
-    :root {
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #111827;
-      --sub: #6b7280;
-      --line: #e5e7eb;
-      --primary: #4f46e5;
-      --primary-soft: #eef2ff;
-      --shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
-      --shadow-soft: 0 6px 18px rgba(17, 24, 39, 0.05);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 18px;
-      --radius-sm: 14px;
+    html,body{
+      margin:0;
+      padding:0;
+      background:linear-gradient(180deg,#f9faff 0%,#f4f6fb 100%);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      min-height:100vh;
     }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #f9faff 0%, #f4f6fb 100%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      min-height: 100vh;
+    body{ padding:18px 12px 36px; }
+
+    .app{
+      max-width:920px;
+      margin:0 auto;
     }
 
-    body {
-      padding: 18px 12px 36px;
+    .hero{
+      background:linear-gradient(135deg,#5b7cff,#7c4dff);
+      color:#fff;
+      border-radius:30px;
+      padding:26px 20px 22px;
+      box-shadow:0 16px 36px rgba(92,84,255,.24);
+      margin-bottom:18px;
     }
 
-    .app {
-      max-width: 920px;
-      margin: 0 auto;
+    .hero h1{
+      margin:0;
+      font-size:30px;
+      font-weight:900;
+      letter-spacing:-.6px;
     }
 
-    .hero {
-      background: linear-gradient(135deg, #5b7cff, #7c4dff);
-      color: #fff;
-      border-radius: 30px;
-      padding: 26px 20px 22px;
-      box-shadow: 0 16px 36px rgba(92, 84, 255, 0.24);
-      margin-bottom: 18px;
+    .hero p{
+      margin:10px 0 0;
+      font-size:14px;
+      color:rgba(255,255,255,.9);
+      line-height:1.5;
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: -0.6px;
+    .top-actions{
+      margin-top:16px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
     }
 
-    .hero p {
-      margin: 10px 0 0;
-      font-size: 14px;
-      color: rgba(255,255,255,0.9);
-      line-height: 1.5;
+    button{
+      border:none;
+      cursor:pointer;
+      transition:.15s ease;
+      font-family:inherit;
     }
 
-    .top-actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    button:hover{ transform:translateY(-1px); }
+
+    .ghost-btn{
+      background:rgba(255,255,255,.16);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+      backdrop-filter:blur(8px);
     }
 
-    button {
-      border: none;
-      cursor: pointer;
-      transition: 0.15s ease;
-      font-family: inherit;
+    .section{ margin-top:20px; }
+    .hidden{ display:none !important; }
+
+    .section-title{
+      font-size:20px;
+      font-weight:900;
+      margin:0 0 14px;
+      letter-spacing:-.3px;
     }
 
-    button:hover {
-      transform: translateY(-1px);
+    .section-sub{
+      margin:-2px 0 14px;
+      font-size:13px;
+      color:var(--sub);
     }
 
-    .ghost-btn {
-      background: rgba(255,255,255,0.16);
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 800;
-      backdrop-filter: blur(8px);
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
     }
 
-    .section {
-      margin-top: 20px;
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
     }
 
-    .section.hidden {
-      display: none;
+    .choice-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:22px 18px;
+      min-height:120px;
+      box-shadow:var(--shadow);
+      text-align:left;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
-    .section-title {
-      font-size: 20px;
-      font-weight: 900;
-      margin: 0 0 14px;
-      letter-spacing: -0.3px;
+    .choice-card:hover{
+      border-color:#c7d2fe;
+      box-shadow:0 16px 34px rgba(79,70,229,.12);
     }
 
-    .section-sub {
-      margin: -2px 0 14px;
-      font-size: 13px;
-      color: var(--sub);
+    .choice-label{
+      font-size:26px;
+      font-weight:900;
+      letter-spacing:-.6px;
+      color:var(--text);
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+    .choice-desc{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--sub);
+      line-height:1.5;
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+    .choice-chip{
+      margin-top:14px;
+      align-self:flex-start;
+      padding:7px 11px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      font-size:12px;
+      font-weight:800;
     }
 
-    .choice-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-xl);
-      padding: 22px 18px;
-      min-height: 120px;
-      box-shadow: var(--shadow);
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    .toolbar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
     }
 
-    .choice-card:hover {
-      border-color: #c7d2fe;
-      box-shadow: 0 16px 34px rgba(79, 70, 229, 0.12);
+    .tool-btn{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      font-weight:800;
+      color:#374151;
+      box-shadow:var(--shadow-soft);
     }
 
-    .choice-label {
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: -0.6px;
-      color: var(--text);
+    .tool-btn.primary{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
     }
 
-    .choice-desc {
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--sub);
-      line-height: 1.5;
+    .chapter-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
     }
 
-    .choice-chip {
-      margin-top: 14px;
-      align-self: flex-start;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 800;
+    .chapter-btn{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px 16px;
+      text-align:left;
+      box-shadow:var(--shadow-soft);
     }
 
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
+    .chapter-btn strong{
+      display:block;
+      font-size:18px;
+      font-weight:900;
+      color:var(--text);
+      margin-bottom:6px;
     }
 
-    .tool-btn {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 800;
-      color: #374151;
-      box-shadow: var(--shadow-soft);
+    .chapter-btn span{
+      font-size:13px;
+      color:var(--sub);
     }
 
-    .tool-btn.primary {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
+    .search-wrap{
+      display:flex;
+      gap:10px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
     }
 
-    .chapter-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .chapter-btn {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px 16px;
-      text-align: left;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .chapter-btn strong {
-      display: block;
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .chapter-btn span {
-      font-size: 13px;
-      color: var(--sub);
-    }
-
-    .search-wrap {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .search-input {
-      flex: 1;
-      min-width: 200px;
-      height: 48px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 0 14px;
-      font-size: 14px;
-      background: #fff;
-      outline: none;
-      box-shadow: var(--shadow-soft);
+    .search-input{
+      flex:1;
+      min-width:200px;
+      height:48px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:0 14px;
+      font-size:14px;
+      background:#fff;
+      outline:none;
+      box-shadow:var(--shadow-soft);
     }
 
     .search-input:focus,
-    .test-input:focus {
-      border-color: #c7d2fe;
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+    .test-input:focus{
+      border-color:#c7d2fe;
+      box-shadow:0 0 0 4px rgba(79,70,229,.08);
     }
 
-    .stats {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
+    .stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
     }
 
-    .stat-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 14px 16px;
-      min-width: 130px;
-      box-shadow: var(--shadow-soft);
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:14px 16px;
+      min-width:130px;
+      box-shadow:var(--shadow-soft);
     }
 
-    .stat-label {
-      font-size: 12px;
-      color: var(--sub);
-      margin-bottom: 6px;
-      font-weight: 700;
+    .stat-label{
+      font-size:12px;
+      color:var(--sub);
+      margin-bottom:6px;
+      font-weight:700;
     }
 
-    .stat-value {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.3px;
+    .stat-value{
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.3px;
     }
 
-    .word-list {
-      display: grid;
-      gap: 14px;
+    .word-list{
+      display:grid;
+      gap:14px;
     }
 
-    .word-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: var(--shadow);
+    .word-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:var(--shadow);
     }
 
-    .word-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+    .word-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
     }
 
-    .word-en {
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: -0.6px;
-      line-height: 1.15;
-      margin-bottom: 8px;
-      color: #111827;
-      word-break: break-word;
+    .word-en{
+      font-size:26px;
+      font-weight:900;
+      letter-spacing:-.6px;
+      line-height:1.15;
+      margin-bottom:8px;
+      color:#111827;
+      word-break:break-word;
     }
 
-    .word-ko {
-      font-size: 15px;
-      color: #4b5563;
-      line-height: 1.6;
-      word-break: break-word;
+    .word-ko{
+      font-size:15px;
+      color:#4b5563;
+      line-height:1.6;
+      word-break:break-word;
     }
 
-    .badge {
-      flex-shrink: 0;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 900;
+    .badge{
+      flex-shrink:0;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      font-size:12px;
+      font-weight:900;
     }
 
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
+    .meta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:14px;
     }
 
-    .meta-chip {
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #f3f4f6;
-      color: #4b5563;
-      font-size: 12px;
-      font-weight: 800;
+    .meta-chip{
+      padding:7px 10px;
+      border-radius:999px;
+      background:#f3f4f6;
+      color:#4b5563;
+      font-size:12px;
+      font-weight:800;
     }
 
-    .test-shell {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 22px 18px;
-      box-shadow: var(--shadow);
+    .test-shell{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:22px 18px;
+      box-shadow:var(--shadow);
     }
 
-    .test-progress {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 900;
-      margin-bottom: 14px;
+    .test-progress{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      font-size:12px;
+      font-weight:900;
+      margin-bottom:14px;
     }
 
-    .test-question {
-      font-size: 34px;
-      font-weight: 900;
-      line-height: 1.2;
-      letter-spacing: -0.7px;
-      margin-bottom: 18px;
+    .test-question{
+      font-size:34px;
+      font-weight:900;
+      line-height:1.2;
+      letter-spacing:-.7px;
+      margin-bottom:18px;
     }
 
-    .test-input {
-      width: 100%;
-      height: 52px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 0 14px;
-      font-size: 15px;
-      outline: none;
-      background: #fff;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-soft);
+    .test-input{
+      width:100%;
+      height:52px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:0 14px;
+      font-size:15px;
+      outline:none;
+      background:#fff;
+      margin-bottom:14px;
+      box-shadow:var(--shadow-soft);
     }
 
-    .test-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .test-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
     }
 
-    .test-btn {
-      border-radius: 999px;
-      padding: 11px 16px;
-      font-size: 14px;
-      font-weight: 900;
+    .test-btn{
+      border-radius:999px;
+      padding:11px 16px;
+      font-size:14px;
+      font-weight:900;
     }
 
-    .test-btn.primary {
-      background: var(--primary);
-      color: #fff;
+    .test-btn.primary{
+      background:var(--primary);
+      color:#fff;
     }
 
-    .test-btn.soft {
-      background: #eef2ff;
-      color: var(--primary);
+    .test-btn.soft{
+      background:#eef2ff;
+      color:var(--primary);
     }
 
-    .result-box {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      font-size: 14px;
-      font-weight: 900;
+    .result-box{
+      margin-top:16px;
+      padding:14px 16px;
+      border-radius:18px;
+      font-size:14px;
+      font-weight:900;
     }
 
-    .result-correct {
-      background: #ecfdf5;
-      color: #047857;
+    .result-correct{
+      background:#ecfdf5;
+      color:#047857;
     }
 
-    .result-wrong {
-      background: #fef2f2;
-      color: #b91c1c;
+    .result-wrong{
+      background:#fef2f2;
+      color:#b91c1c;
     }
 
-    .score-box {
-      margin-top: 18px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 20px 18px;
-      box-shadow: var(--shadow-soft);
+    .score-box{
+      margin-top:18px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:20px 18px;
+      box-shadow:var(--shadow-soft);
     }
 
-    .score-big {
-      font-size: 30px;
-      font-weight: 900;
-      margin-bottom: 8px;
-      color: var(--primary);
+    .score-big{
+      font-size:30px;
+      font-weight:900;
+      margin-bottom:8px;
+      color:var(--primary);
     }
 
-    .score-sub {
-      font-size: 14px;
-      color: var(--sub);
+    .score-sub{
+      font-size:14px;
+      color:var(--sub);
     }
 
-    .empty-box {
-      background: #fff;
-      border: 1px dashed #cbd5e1;
-      border-radius: 22px;
-      padding: 36px 18px;
-      text-align: center;
-      color: var(--sub);
-      font-weight: 700;
-      box-shadow: var(--shadow-soft);
+    .empty-box,
+    .error-box{
+      background:#fff;
+      border:1px dashed #cbd5e1;
+      border-radius:22px;
+      padding:20px 18px;
+      color:var(--sub);
+      font-weight:700;
+      box-shadow:var(--shadow-soft);
     }
 
-    @media (max-width: 760px) {
-      .grid-3,
-      .grid-2,
-      .chapter-grid {
-        grid-template-columns: 1fr;
-      }
+    .error-box{
+      border-style:solid;
+      border-color:#fecaca;
+      background:#fff7f7;
+      color:#991b1b;
+      line-height:1.6;
+    }
 
-      .hero h1 {
-        font-size: 24px;
-      }
-
-      .choice-label {
-        font-size: 24px;
-      }
-
-      .word-en {
-        font-size: 22px;
-      }
-
-      .test-question {
-        font-size: 28px;
-      }
-
+    @media (max-width:760px){
+      .grid-3,.grid-2,.chapter-grid{ grid-template-columns:1fr; }
+      .hero h1{ font-size:24px; }
+      .choice-label{ font-size:24px; }
+      .word-en{ font-size:22px; }
+      .test-question{ font-size:28px; }
       .top-actions button,
       .test-actions button,
-      .toolbar button {
-        width: 100%;
-      }
+      .toolbar button{ width:100%; }
     }
   </style>
 </head>
@@ -496,6 +470,8 @@
         <button class="ghost-btn" id="backBtn">뒤로가기</button>
       </div>
     </div>
+
+    <div id="globalError" class="error-box hidden"></div>
 
     <section class="section" id="bookSection">
       <h2 class="section-title">교재 선택</h2>
@@ -586,20 +562,10 @@
   <script>
     const CSV_URL = "words.csv";
 
-    const KEY_MAP = {
-      book: "교재",
-      level: "레벨",
-      chapterCode: "구간",
-      chapterName: "Chapter",
-      english: "영어",
-      meaning: "뜻",
-      id: "id"
-    };
-
     const BOOK_LABELS = [
-      { raw: "T-map", label: "T-map", desc: "기본 학습 단어장" },
-      { raw: "V-map", label: "V-map", desc: "확장 학습 단어장" },
-      { raw: "절대수능-map", label: "절대수능-map", desc: "수능 대비 단어장" }
+      { raw: "T-map", label: "티맵", desc: "기본 학습 단어장", aliases: ["t-map", "tmap", "티맵"] },
+      { raw: "V-map", label: "브이맵", desc: "확장 학습 단어장", aliases: ["v-map", "vmap", "브이맵"] },
+      { raw: "절대수능-map", label: "절대수능맵", desc: "수능 대비 단어장", aliases: ["절대수능-map", "절대수능map", "절대수능맵"] }
     ];
 
     let allWords = [];
@@ -619,6 +585,7 @@
     const chapterSection = document.getElementById("chapterSection");
     const wordSection = document.getElementById("wordSection");
     const testSection = document.getElementById("testSection");
+    const globalError = document.getElementById("globalError");
 
     const bookGrid = document.getElementById("bookGrid");
     const levelGrid = document.getElementById("levelGrid");
@@ -655,34 +622,65 @@
 
     async function loadCSV() {
       try {
-        const res = await fetch(CSV_URL);
+        const res = await fetch(CSV_URL, { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error(`CSV 파일을 불러오지 못함 (${res.status})`);
+        }
+
         const text = await res.text();
         const rows = parseCSV(text);
 
+        if (!rows.length) {
+          throw new Error("CSV에 데이터가 없음");
+        }
+
+        const headerKeys = Object.keys(rows[0]);
+        const keyMap = detectKeyMap(headerKeys);
+
+        const missing = [];
+        if (!keyMap.book) missing.push("교재");
+        if (!keyMap.level) missing.push("레벨");
+        if (!keyMap.english) missing.push("영어");
+        if (!keyMap.meaning) missing.push("뜻");
+
+        if (missing.length) {
+          throw new Error(`CSV 헤더를 찾지 못함: ${missing.join(", ")}`);
+        }
+
         allWords = rows.map((row, idx) => ({
-          id: row[KEY_MAP.id] || idx + 1,
-          book: row[KEY_MAP.book] || "",
-          level: row[KEY_MAP.level] || "",
-          chapterCode: row[KEY_MAP.chapterCode] || "",
-          chapterName: row[KEY_MAP.chapterName] || "",
-          english: row[KEY_MAP.english] || "",
-          meaning: row[KEY_MAP.meaning] || ""
+          id: pickValue(row, keyMap.id) || idx + 1,
+          book: pickValue(row, keyMap.book),
+          level: pickValue(row, keyMap.level),
+          chapterCode: pickValue(row, keyMap.chapterCode),
+          chapterName: pickValue(row, keyMap.chapterName),
+          english: pickValue(row, keyMap.english),
+          meaning: pickValue(row, keyMap.meaning)
         })).filter(v => v.book && v.level && v.english && v.meaning);
+
+        if (!allWords.length) {
+          throw new Error("읽어온 단어 데이터가 0개임");
+        }
 
         renderBookCards();
       } catch (err) {
-        bookGrid.innerHTML = `<div class="empty-box">CSV 불러오기 실패. 파일명이나 헤더를 확인해봐.</div>`;
+        showGlobalError(
+          `데이터를 불러오지 못했다.<br>` +
+          `1) CSV 파일명이 <b>${escapeHtml(CSV_URL)}</b> 맞는지<br>` +
+          `2) 헤더가 <b>교재, 레벨, 구간, Chapter, 영어, 뜻</b> 중 비슷하게 들어있는지<br>` +
+          `3) GitHub에 CSV가 같이 올라가 있는지 확인해봐.<br><br>` +
+          `오류: ${escapeHtml(err.message)}`
+        );
         console.error(err);
       }
     }
 
     function parseCSV(text) {
-      const lines = text.trim().split(/\r?\n/);
+      const lines = text.replace(/^\uFEFF/, "").trim().split(/\r?\n/);
       if (!lines.length) return [];
 
       const headers = splitCSVLine(lines[0]);
 
-      return lines.slice(1).map(line => {
+      return lines.slice(1).filter(Boolean).map(line => {
         const values = splitCSVLine(line);
         const row = {};
         headers.forEach((h, i) => {
@@ -720,7 +718,44 @@
       return result;
     }
 
+    function detectKeyMap(headers) {
+      const map = {};
+      map.book = findHeader(headers, ["교재", "book"]);
+      map.level = findHeader(headers, ["레벨", "level"]);
+      map.chapterCode = findHeader(headers, ["구간", "chaptercode", "chapter_code", "챕터코드"]);
+      map.chapterName = findHeader(headers, ["chapter", "챕터", "chapter name", "chaptername"]);
+      map.english = findHeader(headers, ["영어", "단어", "english", "word"]);
+      map.meaning = findHeader(headers, ["뜻", "의미", "meaning", "korean"]);
+      map.id = findHeader(headers, ["id", "ID", "아이디"]);
+      return map;
+    }
+
+    function findHeader(headers, candidates) {
+      const normalizedHeaders = headers.map(h => normalize(h));
+      for (const candidate of candidates) {
+        const idx = normalizedHeaders.indexOf(normalize(candidate));
+        if (idx >= 0) return headers[idx];
+      }
+      return "";
+    }
+
+    function pickValue(row, key) {
+      return key ? String(row[key] ?? "").trim() : "";
+    }
+
+    function showGlobalError(html) {
+      globalError.innerHTML = html;
+      globalError.classList.remove("hidden");
+    }
+
+    function hideGlobalError() {
+      globalError.classList.add("hidden");
+      globalError.innerHTML = "";
+    }
+
     function renderBookCards() {
+      hideGlobalError();
+
       bookGrid.innerHTML = BOOK_LABELS.map(item => `
         <button class="choice-card" onclick="selectBook('${escapeAttr(item.raw)}')">
           <div>
@@ -741,7 +776,7 @@
 
       const levels = [...new Set(
         allWords
-          .filter(v => normalize(v.book) === normalize(book))
+          .filter(v => isSameBook(v.book, book))
           .map(v => v.level)
           .filter(Boolean)
       )];
@@ -770,7 +805,7 @@
       filteredWords = [];
 
       const chapterItems = allWords
-        .filter(v => normalize(v.book) === normalize(currentBook) && normalize(v.level) === normalize(level))
+        .filter(v => isSameBook(v.book, currentBook) && normalize(v.level) === normalize(level))
         .map(v => ({
           code: v.chapterCode || "",
           name: v.chapterName || ""
@@ -780,7 +815,7 @@
       const seen = new Set();
 
       chapterItems.forEach(item => {
-        const key = `${item.code}||${item.name}`;
+        const key = `${normalize(item.code)}||${normalize(item.name)}`;
         if (!seen.has(key)) {
           seen.add(key);
           uniqueChapters.push(item);
@@ -805,7 +840,7 @@
       currentChapter = code || name;
 
       currentWords = allWords.filter(v =>
-        normalize(v.book) === normalize(currentBook) &&
+        isSameBook(v.book, currentBook) &&
         normalize(v.level) === normalize(currentLevel) &&
         normalize(v.chapterCode || v.chapterName) === normalize(currentChapter)
       );
@@ -987,12 +1022,33 @@
     }
 
     function getBookLabel(raw) {
-      const found = BOOK_LABELS.find(v => normalize(v.raw) === normalize(raw));
+      const norm = normalize(raw);
+      const found = BOOK_LABELS.find(v =>
+        normalize(v.raw) === norm || v.aliases.some(a => normalize(a) === norm)
+      );
       return found ? found.label : raw;
     }
 
+    function isSameBook(csvBook, selectedBook) {
+      const csvNorm = normalize(csvBook);
+      const selectedNorm = normalize(selectedBook);
+
+      const selectedObj = BOOK_LABELS.find(v => normalize(v.raw) === selectedNorm);
+      if (!selectedObj) return csvNorm === selectedNorm;
+
+      return (
+        csvNorm === selectedNorm ||
+        csvNorm === normalize(selectedObj.label) ||
+        selectedObj.aliases.some(a => normalize(a) === csvNorm)
+      );
+    }
+
     function normalize(value) {
-      return String(value || "").replace(/\s+/g, "").trim().toLowerCase();
+      return String(value || "")
+        .replace(/\s+/g, "")
+        .replace(/_/g, "")
+        .trim()
+        .toLowerCase();
     }
 
     function escapeHtml(str) {
