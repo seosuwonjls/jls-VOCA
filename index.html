@@ -1,376 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서수원 JLS 단어장</title>
+
 <style>
+
 *{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(180deg,#eef3ff 0%, #f6f8ff 55%, #fdfdff 100%);
-  color:#223a73;
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#eaf2ff,#f7f9ff);
+color:#223b70;
 }
 
 .wrap{
-  max-width:820px;
-  margin:0 auto;
-  padding:0 18px 28px;
+max-width:820px;
+margin:auto;
+padding:20px;
 }
 
 .topbar{
-  position:sticky;
-  top:0;
-  z-index:100;
-  margin:0 -18px 18px;
-  padding:26px 22px 18px;
-  background:linear-gradient(135deg,#1f63d8 0%, #2f87ff 100%);
-  border-bottom-left-radius:28px;
-  border-bottom-right-radius:28px;
-  box-shadow:0 12px 30px rgba(46,107,214,0.22);
+background:linear-gradient(135deg,#2f6be6,#4aa3ff);
+padding:22px;
+border-radius:22px;
+color:white;
+margin-bottom:20px;
+box-shadow:0 10px 20px rgba(0,0,0,0.12);
 }
 
 h1{
-  margin:0 0 14px 0;
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:-0.6px;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-h1::before{
-  content:"JLS";
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:72px;
-  height:42px;
-  padding:0 10px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#f15b6c 0%, #ffb347 55%, #4e8dff 100%);
-  color:#fff;
-  font-size:22px;
-  font-weight:900;
-  box-shadow:0 8px 18px rgba(0,0,0,0.14);
+margin:0 0 10px 0;
+font-size:28px;
+font-weight:800;
 }
 
 .path{
-  font-size:14px;
-  color:rgba(255,255,255,0.92);
-  margin-bottom:14px;
-  font-weight:700;
-  line-height:1.5;
-  background:rgba(255,255,255,0.16);
-  padding:10px 14px;
-  border-radius:16px;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
+font-size:14px;
+opacity:0.9;
+margin-bottom:12px;
 }
 
 .controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:4px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
 }
 
 .btn{
-  border:1px solid #d6def1;
-  background:#fff;
-  border-radius:18px;
-  padding:12px 18px;
-  cursor:pointer;
-  font-size:15px;
-  color:#2a5fbd;
-  font-weight:800;
-  transition:all .18s ease;
-  box-shadow:0 6px 14px rgba(46,84,160,0.08);
+border:none;
+background:white;
+padding:10px 16px;
+border-radius:14px;
+cursor:pointer;
+font-weight:700;
+color:#2f6be6;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 .btn:hover{
-  background:#2f7df4;
-  border-color:#2f7df4;
-  color:#fff;
-  transform:translateY(-1px);
+background:#2f6be6;
+color:white;
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
 }
 
 .card{
-  background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-  border:1px solid #d9e4fb;
-  border-radius:24px;
-  padding:22px 16px;
-  cursor:pointer;
-  min-height:104px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:22px;
-  font-weight:800;
-  color:#244a99;
-  box-shadow:0 10px 22px rgba(47,92,175,0.08);
-  transition:all .18s ease;
+background:white;
+border-radius:18px;
+padding:20px;
+font-weight:800;
+font-size:18px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 14px rgba(0,0,0,0.1);
 }
 
 .card:hover{
-  background:linear-gradient(180deg,#ffffff 0%, #eef5ff 100%);
-  transform:translateY(-2px);
-  box-shadow:0 14px 28px rgba(47,92,175,0.12);
+transform:translateY(-3px);
 }
 
 .word-grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:16px;
+display:grid;
+gap:14px;
 }
 
 .word-card{
-  background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
-  border:1px solid #d8e0ee;
-  border-radius:24px;
-  padding:22px 22px 22px 26px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:18px;
-  box-shadow:0 10px 24px rgba(46,84,160,0.08);
-  transition:all .18s ease;
-}
-
-.word-card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 28px rgba(46,84,160,0.12);
-}
-
-.word-card:first-child{
-  border:3px solid #48baf2;
-  box-shadow:0 12px 26px rgba(72,186,242,0.16);
-}
-
-.word-left{
-  min-width:0;
-  flex:1;
+background:white;
+border-radius:20px;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 8px 18px rgba(0,0,0,0.1);
 }
 
 .word{
-  font-size:28px;
-  font-weight:900;
-  word-break:break-word;
-  color:#1f478f;
-  letter-spacing:-0.4px;
-  line-height:1.2;
+font-size:22px;
+font-weight:800;
 }
 
 .meaning{
-  margin-top:10px;
-  color:#4f5f84;
-  font-size:18px;
-  word-break:keep-all;
-  line-height:1.45;
-  font-weight:600;
+font-size:16px;
+margin-top:6px;
+color:#555;
 }
 
 .speak-btn{
-  border:1px solid #e1d8cf;
-  background:linear-gradient(180deg,#fffdf9 0%, #f7f1ea 100%);
-  border-radius:999px;
-  width:92px;
-  height:92px;
-  cursor:pointer;
-  font-size:40px;
-  flex:0 0 auto;
-  transition:all .18s ease;
-  box-shadow:0 8px 18px rgba(76,83,102,0.10);
+border:none;
+background:#fff2dc;
+border-radius:50%;
+width:60px;
+height:60px;
+font-size:26px;
+cursor:pointer;
 }
 
 .speak-btn:hover{
-  transform:scale(1.04);
-  background:linear-gradient(180deg,#fff7eb 0%, #ffe9c8 100%);
+background:#ffe1a3;
 }
 
 .hidden-word{visibility:hidden}
 .hidden-meaning{display:none}
 
 .loading,.empty{
-  background:#fff;
-  border:1px solid #d9e4fb;
-  border-radius:24px;
-  padding:34px;
-  text-align:center;
-  color:#68789d;
-  box-shadow:0 10px 22px rgba(47,92,175,0.08);
+background:white;
+padding:30px;
+border-radius:18px;
+text-align:center;
 }
 
-/* 테스트 */
 .test-wrap{
-  background:#fff;
-  border:1px solid #d9e4fb;
-  border-radius:28px;
-  padding:24px;
-  box-shadow:0 12px 26px rgba(47,92,175,0.10);
-}
-
-.test-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:18px;
-  flex-wrap:wrap;
-}
-
-.test-progress{
-  font-size:15px;
-  color:#6173a0;
-  font-weight:800;
+background:white;
+padding:22px;
+border-radius:20px;
+box-shadow:0 8px 18px rgba(0,0,0,0.1);
 }
 
 .question-box{
-  background:linear-gradient(135deg,#2166da 0%, #4aa3ff 100%);
-  border:none;
-  border-radius:24px;
-  padding:30px 24px;
-  margin-bottom:18px;
-  text-align:center;
-  box-shadow:0 14px 28px rgba(47,125,244,0.20);
-}
-
-.question-label{
-  font-size:14px;
-  color:rgba(255,255,255,0.86);
-  margin-bottom:10px;
-  font-weight:700;
+background:linear-gradient(135deg,#2f6be6,#4aa3ff);
+color:white;
+padding:24px;
+border-radius:18px;
+margin-bottom:16px;
+text-align:center;
 }
 
 .question-word{
-  font-size:34px;
-  font-weight:900;
-  word-break:break-word;
-  color:#fff;
-  letter-spacing:-0.4px;
+font-size:28px;
+font-weight:800;
 }
 
 .choice-grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
+display:grid;
+gap:10px;
 }
 
 .choice-btn{
-  border:1px solid #dbe5f9;
-  background:#fff;
-  border-radius:18px;
-  padding:18px;
-  cursor:pointer;
-  font-size:17px;
-  text-align:left;
-  min-height:72px;
-  transition:all .18s ease;
-  color:#1f2340;
-  box-shadow:0 4px 10px rgba(36,71,166,0.05);
-  font-weight:700;
+padding:14px;
+border-radius:12px;
+border:1px solid #d9e4ff;
+background:white;
+cursor:pointer;
+font-weight:700;
 }
 
 .choice-btn:hover{
-  background:#f3f8ff;
-  border-color:#bfd4ff;
-  transform:translateY(-1px);
+background:#eef4ff;
 }
 
 .choice-btn.correct{
-  border-color:#ffc57c;
-  background:linear-gradient(180deg,#fff6ea 0%, #ffe8c8 100%);
-  color:#9a5600;
+background:#ffe7c7;
 }
 
 .choice-btn.wrong{
-  border-color:#ffc3db;
-  background:linear-gradient(180deg,#fff4f9 0%, #ffe1ee 100%);
-  color:#b23f79;
+background:#ffd6e1;
 }
 
 .test-result{
-  background:#fff;
-  border:1px solid #d9e4fb;
-  border-radius:28px;
-  padding:30px 24px;
-  text-align:center;
-  box-shadow:0 12px 26px rgba(47,92,175,0.10);
+background:white;
+padding:30px;
+border-radius:20px;
+text-align:center;
 }
 
 .result-score{
-  font-size:38px;
-  font-weight:900;
-  margin-bottom:10px;
-  color:#2447a6;
-}
-
-.result-sub{
-  color:#6678a3;
-  margin-bottom:18px;
-  font-weight:700;
+font-size:36px;
+font-weight:900;
+margin-bottom:10px;
 }
 
 .result-buttons{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
 }
 
-@media (max-width:900px){
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-@media (max-width:700px){
-  .wrap{
-    padding:0 14px 24px;
-  }
-
-  .topbar{
-    margin:0 -14px 16px;
-    padding:20px 16px 16px;
-    border-bottom-left-radius:24px;
-    border-bottom-right-radius:24px;
-  }
-
-  h1{
-    font-size:26px;
-  }
-
-  h1::before{
-    min-width:58px;
-    height:34px;
-    font-size:18px;
-    border-radius:12px;
-  }
-
-  .grid{
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-
-  .word{
-    font-size:22px;
-  }
-
-  .meaning{
-    font-size:16px;
-  }
-
-  .speak-btn{
-    width:74px;
-    height:74px;
-    font-size:32px;
-  }
-
-  .question-word{
-    font-size:26px;
-  }
-}
 </style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<div class="topbar">
+<h1>서수원 JLS 단어장</h1>
+<div class="path" id="path">로딩중...</div>
+<div class="controls" id="controls"></div>
+</div>
+
+<div id="app" class="loading">단어 데이터 로딩중...</div>
+
+</div>
+
+<script>
+
+let rawData=[]
+
+let state={
+book:null,
+level:null,
+section:null,
+chapter:null,
+hideWord:false,
+hideMeaning:false,
+mode:"browse"
+}
+
+let testState={
+questions:[],
+currentIndex:0,
+score:0,
+selected:null,
+answered:false
+}
+
+const app=document.getElementById("app")
+const controls=document.getElementById("controls")
+const pathEl=document.getElementById("path")
+
+function parseCSV(text){
+const rows=text.trim().split("\n").map(r=>r.split(","))
+return rows
+}
+
+function speakWord(word){
+const u=new SpeechSynthesisUtterance(word)
+u.lang="en-US"
+speechSynthesis.speak(u)
+}
+
+function renderPath(){
+let parts=["홈"]
+if(state.book)parts.push(state.book)
+if(state.level)parts.push(state.level)
+if(state.section)parts.push(state.section)
+if(state.chapter)parts.push("Chapter "+state.chapter)
+pathEl.textContent=parts.join(" > ")
+}
+
+function renderControls(){
+
+let html=""
+
+if(state.book)html+=`<button class="btn" data-action="home">처음으로</button>`
+
+if(state.chapter && state.mode==="browse"){
+html+=`<button class="btn" data-action="toggle-meaning">${state.hideMeaning?"뜻보이기":"뜻숨기기"}</button>`
+html+=`<button class="btn" data-action="toggle-word">${state.hideWord?"영어보이기":"영어숨기기"}</button>`
+html+=`<button class="btn" data-action="start-test">테스트 시작</button>`
+}
+
+controls.innerHTML=html
+}
+
+function getUnique(arr,key){
+return [...new Set(arr.map(x=>x[key]))]
+}
+
+function renderBooks(){
+
+let books=getUnique(rawData,"교재")
+
+app.innerHTML=`<div class="grid">${
+books.map(b=>`<div class="card" data-type="book" data-value="${b}">${b}</div>`).join("")
+}</div>`
+
+}
+
+function renderLevels(){
+
+let rows=rawData.filter(x=>x["교재"]===state.book)
+
+let levels=getUnique(rows,"레벨")
+
+app.innerHTML=`<div class="grid">${
+levels.map(l=>`<div class="card" data-type="level" data-value="${l}">${l}</div>`).join("")
+}</div>`
+
+}
+
+function renderSections(){
+
+let rows=rawData.filter(x=>
+x["교재"]===state.book &&
+x["레벨"]===state.level)
+
+let sections=getUnique(rows,"구간")
+
+app.innerHTML=`<div class="grid">${
+sections.map(s=>`<div class="card" data-type="section" data-value="${s}">${s}</div>`).join("")
+}</div>`
+}
+
+function renderChapters(){
+
+let rows=rawData.filter(x=>
+x["교재"]===state.book &&
+x["레벨"]===state.level &&
+x["구간"]===state.section)
+
+let chapters=getUnique(rows,"Chapter")
+
+app.innerHTML=`<div class="grid">${
+chapters.map(c=>`<div class="card" data-type="chapter" data-value="${c}">Chapter ${c}</div>`).join("")
+}</div>`
+
+}
+
+function getChapterRows(){
+return rawData.filter(x=>
+x["교재"]===state.book &&
+x["레벨"]===state.level &&
+x["구간"]===state.section &&
+x["Chapter"]===state.chapter)
+}
+
+function renderWords(){
+
+let rows=getChapterRows()
+
+app.innerHTML=`<div class="word-grid">${
+rows.map((r,i)=>`
+
+<div class="word-card">
+
+<div>
+<div class="word ${state.hideWord?"hidden-word":""}">
+${i+1}. ${r["영어"]}
+</div>
+
+<div class="meaning ${state.hideMeaning?"hidden-meaning":""}">
+${r["뜻"]}
+</div>
+</div>
+
+<button class="speak-btn" data-type="speak" data-value="${r["영어"]}">🔊</button>
+
+</div>
+
+`).join("")
+}</div>`
+}
+
+function render(){
+
+renderPath()
+renderControls()
+
+if(!state.book)return renderBooks()
+if(!state.level)return renderLevels()
+if(!state.section)return renderSections()
+if(!state.chapter)return renderChapters()
+
+renderWords()
+
+}
+
+app.addEventListener("click",function(e){
+
+let el=e.target.closest("[data-type]")
+if(!el)return
+
+let type=el.dataset.type
+let value=el.dataset.value
+
+if(type==="speak"){
+speakWord(value)
+return
+}
+
+if(type==="book")state.book=value
+if(type==="level")state.level=value
+if(type==="section")state.section=value
+if(type==="chapter")state.chapter=value
+
+render()
+
+})
+
+controls.addEventListener("click",function(e){
+
+let action=e.target.dataset.action
+
+if(action==="home"){
+state={book:null,level:null,section:null,chapter:null,hideWord:false,hideMeaning:false}
+render()
+}
+
+if(action==="toggle-meaning"){
+state.hideMeaning=!state.hideMeaning
+render()
+}
+
+if(action==="toggle-word"){
+state.hideWord=!state.hideWord
+render()
+}
+
+})
+
+async function loadData(){
+
+let res=await fetch("./vocab.csv")
+let text=await res.text()
+
+let rows=parseCSV(text)
+
+let headers=rows[0]
+
+rawData=rows.slice(1).map(r=>{
+let obj={}
+headers.forEach((h,i)=>obj[h]=r[i])
+return obj
+})
+
+render()
+
+}
+
+loadData()
+
+</script>
+
+</body>
+</html>
