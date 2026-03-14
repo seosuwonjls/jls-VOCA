@@ -497,23 +497,18 @@
       </div>
     </div>
 
-    <!-- 1. 교재 선택 -->
     <section class="section" id="bookSection">
       <h2 class="section-title">교재 선택</h2>
-      <p class="section-sub">먼저 보고 싶은 단어장 종류를 골라줘.</p>
-
+      <p class="section-sub">먼저 보고 싶은 단어장을 골라줘.</p>
       <div class="grid-3" id="bookGrid"></div>
     </section>
 
-    <!-- 2. 레벨 선택 -->
     <section class="section hidden" id="levelSection">
       <h2 class="section-title">레벨 선택</h2>
       <p class="section-sub" id="levelSubText"></p>
-
       <div class="grid-2" id="levelGrid"></div>
     </section>
 
-    <!-- 3. 챕터 선택 -->
     <section class="section hidden" id="chapterSection">
       <h2 class="section-title">챕터 선택</h2>
       <p class="section-sub" id="chapterSubText"></p>
@@ -525,7 +520,6 @@
       <div class="chapter-grid" id="chapterGrid"></div>
     </section>
 
-    <!-- 4. 단어 목록 -->
     <section class="section hidden" id="wordSection">
       <h2 class="section-title">단어 목록</h2>
       <p class="section-sub" id="wordSubText"></p>
@@ -561,7 +555,6 @@
       <div class="word-list" id="wordList"></div>
     </section>
 
-    <!-- 5. 테스트 -->
     <section class="section hidden" id="testSection">
       <h2 class="section-title">단어 테스트</h2>
       <p class="section-sub" id="testSubText"></p>
@@ -604,9 +597,9 @@
     };
 
     const BOOK_LABELS = [
-      { raw: "T-map", label: "T-map", desc: "기본 학습 단어장" },
-      { raw: "V-map", label: "V-map", desc: "확장 학습 단어장" },
-      { raw: "수능맵", label: "절대수능-map", desc: "수능 대비 단어장" }
+      { raw: "T-map", label: "티맵", desc: "기본 학습 단어장" },
+      { raw: "V-map", label: "브이맵", desc: "확장 학습 단어장" },
+      { raw: "절대수능-map", label: "절대수능맵", desc: "수능 대비 단어장" }
     ];
 
     let allWords = [];
