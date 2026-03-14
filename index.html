@@ -1,766 +1,1045 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>서수원 JLS 단어장</title>
-<style>
-* {
-  box-sizing: border-box;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>서수원 JLS 단어장</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6fb;
-  color: #111827;
-}
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --sub: #6b7280;
+      --line: #e5e7eb;
+      --primary: #4f46e5;
+      --primary-soft: #eef2ff;
+      --shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
+      --shadow-soft: 0 6px 18px rgba(17, 24, 39, 0.05);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+    }
 
-body {
-  min-height: 100vh;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #f9faff 0%, #f4f6fb 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      min-height: 100vh;
+    }
 
-.wrap {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px 16px 40px;
-}
+    body {
+      padding: 18px 12px 36px;
+    }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(244, 246, 251, 0.96);
-  backdrop-filter: blur(10px);
-  padding: 16px 0 14px;
-}
+    .app {
+      max-width: 920px;
+      margin: 0 auto;
+    }
 
-h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
+    .hero {
+      background: linear-gradient(135deg, #5b7cff, #7c4dff);
+      color: #fff;
+      border-radius: 30px;
+      padding: 26px 20px 22px;
+      box-shadow: 0 16px 36px rgba(92, 84, 255, 0.24);
+      margin-bottom: 18px;
+    }
 
-.subtxt {
-  margin: 0 0 16px;
-  font-size: 14px;
-  color: #6b7280;
-}
+    .hero h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+    }
 
-.controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 12px;
-}
+    .hero p {
+      margin: 10px 0 0;
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.5;
+    }
 
-.controls select,
-.controls input {
-  width: 100%;
-  height: 46px;
-  border: 1px solid #dbe2ea;
-  border-radius: 14px;
-  padding: 0 14px;
-  font-size: 14px;
-  background: #fff;
-  outline: none;
-}
+    .top-actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-.controls select:focus,
-.controls input:focus,
-.test-answer:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-}
+    button {
+      border: none;
+      cursor: pointer;
+      transition: 0.15s ease;
+      font-family: inherit;
+    }
 
-.button-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
+    button:hover {
+      transform: translateY(-1px);
+    }
 
-button {
-  border: 0;
-  border-radius: 999px;
-  padding: 11px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
+    .ghost-btn {
+      background: rgba(255,255,255,0.16);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
 
-button:hover {
-  transform: translateY(-1px);
-}
+    .section {
+      margin-top: 20px;
+    }
 
-.btn-primary {
-  background: #2563eb;
-  color: #fff;
-}
+    .section.hidden {
+      display: none;
+    }
 
-.btn-secondary {
-  background: #e8efff;
-  color: #1d4ed8;
-}
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      margin: 0 0 14px;
+      letter-spacing: -0.3px;
+    }
 
-.btn-gray {
-  background: #eef2f7;
-  color: #374151;
-}
+    .section-sub {
+      margin: -2px 0 14px;
+      font-size: 13px;
+      color: var(--sub);
+    }
 
-.stats {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 18px;
-}
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
 
-.stat-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 14px 16px;
-  min-width: 120px;
-  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.04);
-}
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
 
-.stat-label {
-  font-size: 12px;
-  color: #6b7280;
-  margin-bottom: 6px;
-}
+    .choice-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 22px 18px;
+      min-height: 120px;
+      box-shadow: var(--shadow);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-.stat-value {
-  font-size: 20px;
-  font-weight: 800;
-}
+    .choice-card:hover {
+      border-color: #c7d2fe;
+      box-shadow: 0 16px 34px rgba(79, 70, 229, 0.12);
+    }
 
-.section-title {
-  font-size: 18px;
-  font-weight: 800;
-  margin: 24px 0 12px;
-}
+    .choice-label {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: var(--text);
+    }
 
-.list {
-  display: grid;
-  gap: 12px;
-}
+    .choice-desc {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.5;
+    }
 
-.word-card {
-  background: #fff;
-  border: 1px solid #e6ebf2;
-  border-radius: 20px;
-  padding: 16px;
-  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
-}
+    .choice-chip {
+      margin-top: 14px;
+      align-self: flex-start;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+    }
 
-.word-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 10px;
-}
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
 
-.word-en {
-  font-size: 22px;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: 6px;
-}
+    .tool-btn {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #374151;
+      box-shadow: var(--shadow-soft);
+    }
 
-.word-ko {
-  font-size: 15px;
-  color: #374151;
-  line-height: 1.5;
-}
+    .tool-btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  height: 28px;
-  padding: 0 10px;
-  border-radius: 999px;
-  background: #eef2ff;
-  color: #4338ca;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-}
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
 
-.word-meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
+    .chapter-btn {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px 16px;
+      text-align: left;
+      box-shadow: var(--shadow-soft);
+    }
 
-.meta-chip {
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: #f3f4f6;
-  font-size: 12px;
-  color: #4b5563;
-}
+    .chapter-btn strong {
+      display: block;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
 
-.empty {
-  background: #fff;
-  border: 1px dashed #cbd5e1;
-  border-radius: 20px;
-  padding: 40px 20px;
-  text-align: center;
-  color: #6b7280;
-}
+    .chapter-btn span {
+      font-size: 13px;
+      color: var(--sub);
+    }
 
-.hidden {
-  display: none !important;
-}
+    .search-wrap {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
 
-.test-wrap {
-  background: #fff;
-  border-radius: 24px;
-  padding: 24px 18px;
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
-  border: 1px solid #e5e7eb;
-}
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 0 14px;
+      font-size: 14px;
+      background: #fff;
+      outline: none;
+      box-shadow: var(--shadow-soft);
+    }
 
-.test-progress {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 10px;
-}
+    .search-input:focus,
+    .test-input:focus {
+      border-color: #c7d2fe;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+    }
 
-.test-question {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 18px;
-  line-height: 1.3;
-}
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
 
-.test-answer {
-  width: 100%;
-  height: 48px;
-  border: 1px solid #dbe2ea;
-  border-radius: 14px;
-  padding: 0 14px;
-  font-size: 15px;
-  margin-bottom: 14px;
-  outline: none;
-}
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 14px 16px;
+      min-width: 130px;
+      box-shadow: var(--shadow-soft);
+    }
 
-.test-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+    .stat-label {
+      font-size: 12px;
+      color: var(--sub);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
 
-.result-box {
-  margin-top: 16px;
-  border-radius: 16px;
-  padding: 14px;
-  font-size: 14px;
-  font-weight: 700;
-}
+    .stat-value {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+    }
 
-.result-correct {
-  background: #ecfdf5;
-  color: #047857;
-}
+    .word-list {
+      display: grid;
+      gap: 14px;
+    }
 
-.result-wrong {
-  background: #fef2f2;
-  color: #b91c1c;
-}
+    .word-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
 
-.score-box {
-  margin-top: 18px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
-}
+    .word-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
 
-.score-big {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
+    .word-en {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      color: #111827;
+      word-break: break-word;
+    }
 
-.score-sub {
-  color: #6b7280;
-  font-size: 14px;
-}
+    .word-ko {
+      font-size: 15px;
+      color: #4b5563;
+      line-height: 1.6;
+      word-break: break-word;
+    }
 
-@media (max-width: 640px) {
-  .wrap {
-    padding: 16px 12px 32px;
-  }
+    .badge {
+      flex-shrink: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+    }
 
-  h1 {
-    font-size: 24px;
-  }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
 
-  .controls {
-    grid-template-columns: 1fr;
-  }
+    .meta-chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 800;
+    }
 
-  .word-en {
-    font-size: 20px;
-  }
+    .test-shell {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow);
+    }
 
-  .test-question {
-    font-size: 24px;
-  }
+    .test-progress {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
 
-  .test-actions button,
-  .button-row button {
-    width: 100%;
-  }
-}
-</style>
+    .test-question {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.7px;
+      margin-bottom: 18px;
+    }
+
+    .test-input {
+      width: 100%;
+      height: 52px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 0 14px;
+      font-size: 15px;
+      outline: none;
+      background: #fff;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .test-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .test-btn {
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .test-btn.primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .test-btn.soft {
+      background: #eef2ff;
+      color: var(--primary);
+    }
+
+    .result-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .result-correct {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .result-wrong {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .score-box {
+      margin-top: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .score-big {
+      font-size: 30px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .score-sub {
+      font-size: 14px;
+      color: var(--sub);
+    }
+
+    .empty-box {
+      background: #fff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 22px;
+      padding: 36px 18px;
+      text-align: center;
+      color: var(--sub);
+      font-weight: 700;
+      box-shadow: var(--shadow-soft);
+    }
+
+    @media (max-width: 760px) {
+      .grid-3,
+      .grid-2,
+      .chapter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .choice-label {
+        font-size: 24px;
+      }
+
+      .word-en {
+        font-size: 22px;
+      }
+
+      .test-question {
+        font-size: 28px;
+      }
+
+      .top-actions button,
+      .test-actions button,
+      .toolbar button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="topbar">
-    <h1>서수원 JLS 단어장</h1>
-    <p class="subtxt">교재별 단어 학습 · 검색 · 테스트</p>
+  <div class="app">
+    <div class="hero">
+      <h1>서수원 JLS 단어장</h1>
+      <p>교재 선택부터 시작해서 레벨, 챕터, 단어 테스트까지 한 번에.</p>
 
-    <div class="controls">
-      <select id="bookSelect">
-        <option value="">교재 전체</option>
-      </select>
-
-      <select id="levelSelect">
-        <option value="">레벨 전체</option>
-      </select>
-
-      <select id="chapterSelect">
-        <option value="">챕터 전체</option>
-      </select>
-
-      <input type="text" id="searchInput" placeholder="영어 / 뜻 검색" />
-    </div>
-
-    <div class="button-row">
-      <button class="btn-primary" id="showWordsBtn">단어 보기</button>
-      <button class="btn-secondary" id="startTestBtn">테스트 시작</button>
-      <button class="btn-gray" id="shuffleBtn">랜덤 섞기</button>
-    </div>
-  </div>
-
-  <div class="stats" id="statsArea">
-    <div class="stat-card">
-      <div class="stat-label">전체 단어</div>
-      <div class="stat-value" id="totalCount">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">현재 결과</div>
-      <div class="stat-value" id="filteredCount">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">현재 챕터</div>
-      <div class="stat-value" id="currentChapterText">-</div>
-    </div>
-  </div>
-
-  <div id="wordSection">
-    <div class="section-title">단어 목록</div>
-    <div class="list" id="wordList"></div>
-  </div>
-
-  <div id="testSection" class="hidden">
-    <div class="section-title">단어 테스트</div>
-
-    <div class="test-wrap" id="testWrap">
-      <div class="test-progress" id="testProgress">0 / 0 문제</div>
-      <div class="test-question" id="testQuestion">단어</div>
-      <input type="text" class="test-answer" id="testAnswer" placeholder="뜻을 입력하세요" />
-      <div class="test-actions">
-        <button class="btn-primary" id="checkAnswerBtn">정답 확인</button>
-        <button class="btn-gray" id="nextQuestionBtn">다음 문제</button>
-        <button class="btn-secondary" id="backToWordsBtn">목록으로</button>
+      <div class="top-actions">
+        <button class="ghost-btn" id="homeBtn">처음으로</button>
+        <button class="ghost-btn" id="backBtn">뒤로가기</button>
       </div>
-      <div id="resultBox" class="hidden"></div>
     </div>
 
-    <div class="score-box hidden" id="scoreBox">
-      <div class="score-big" id="scoreText">0점</div>
-      <div class="score-sub" id="scoreSubText">테스트 완료</div>
-    </div>
-  </div>
-</div>
+    <!-- 1. 교재 선택 -->
+    <section class="section" id="bookSection">
+      <h2 class="section-title">교재 선택</h2>
+      <p class="section-sub">먼저 보고 싶은 단어장 종류를 골라줘.</p>
 
-<script>
-/*
-  ============================
-  1. CSV 파일명 수정
-  ============================
-*/
-const CSV_URL = "words.csv";
+      <div class="grid-3" id="bookGrid"></div>
+    </section>
 
-/*
-  ============================
-  2. CSV 헤더명 맞추기
-  네 파일 헤더에 맞게 여기만 바꾸면 됨
-  ============================
-*/
-const KEY_MAP = {
-  book: "교재",
-  level: "레벨",
-  chapterCode: "구간",
-  chapterName: "Chapter",
-  english: "영어",
-  meaning: "뜻",
-  id: "id"
-};
+    <!-- 2. 레벨 선택 -->
+    <section class="section hidden" id="levelSection">
+      <h2 class="section-title">레벨 선택</h2>
+      <p class="section-sub" id="levelSubText"></p>
 
-let allWords = [];
-let filteredWords = [];
+      <div class="grid-2" id="levelGrid"></div>
+    </section>
 
-let currentTestWords = [];
-let currentIndex = 0;
-let correctCount = 0;
-let answeredCurrent = false;
+    <!-- 3. 챕터 선택 -->
+    <section class="section hidden" id="chapterSection">
+      <h2 class="section-title">챕터 선택</h2>
+      <p class="section-sub" id="chapterSubText"></p>
 
-const bookSelect = document.getElementById("bookSelect");
-const levelSelect = document.getElementById("levelSelect");
-const chapterSelect = document.getElementById("chapterSelect");
-const searchInput = document.getElementById("searchInput");
+      <div class="toolbar">
+        <button class="tool-btn" id="goLevelBtn">레벨 다시 선택</button>
+      </div>
 
-const wordList = document.getElementById("wordList");
-const totalCount = document.getElementById("totalCount");
-const filteredCount = document.getElementById("filteredCount");
-const currentChapterText = document.getElementById("currentChapterText");
+      <div class="chapter-grid" id="chapterGrid"></div>
+    </section>
 
-const showWordsBtn = document.getElementById("showWordsBtn");
-const startTestBtn = document.getElementById("startTestBtn");
-const shuffleBtn = document.getElementById("shuffleBtn");
+    <!-- 4. 단어 목록 -->
+    <section class="section hidden" id="wordSection">
+      <h2 class="section-title">단어 목록</h2>
+      <p class="section-sub" id="wordSubText"></p>
 
-const wordSection = document.getElementById("wordSection");
-const testSection = document.getElementById("testSection");
+      <div class="toolbar">
+        <button class="tool-btn" id="goChapterBtn">챕터 다시 선택</button>
+        <button class="tool-btn primary" id="startTestBtn">테스트 시작</button>
+      </div>
 
-const testProgress = document.getElementById("testProgress");
-const testQuestion = document.getElementById("testQuestion");
-const testAnswer = document.getElementById("testAnswer");
-const resultBox = document.getElementById("resultBox");
-const checkAnswerBtn = document.getElementById("checkAnswerBtn");
-const nextQuestionBtn = document.getElementById("nextQuestionBtn");
-const backToWordsBtn = document.getElementById("backToWordsBtn");
-const scoreBox = document.getElementById("scoreBox");
-const scoreText = document.getElementById("scoreText");
-const scoreSubText = document.getElementById("scoreSubText");
+      <div class="search-wrap">
+        <input type="text" id="searchInput" class="search-input" placeholder="영어 / 뜻 검색" />
+      </div>
 
-async function loadCSV() {
-  try {
-    const res = await fetch(CSV_URL);
-    const text = await res.text();
-    const rows = parseCSV(text);
-
-    allWords = rows.map((row, idx) => ({
-      id: row[KEY_MAP.id] || idx + 1,
-      book: row[KEY_MAP.book] || "",
-      level: row[KEY_MAP.level] || "",
-      chapterCode: row[KEY_MAP.chapterCode] || "",
-      chapterName: row[KEY_MAP.chapterName] || "",
-      english: row[KEY_MAP.english] || "",
-      meaning: row[KEY_MAP.meaning] || ""
-    })).filter(item => item.english && item.meaning);
-
-    totalCount.textContent = allWords.length;
-    fillSelectOptions();
-    applyFilters();
-  } catch (err) {
-    wordList.innerHTML = `<div class="empty">CSV 불러오기 실패. 파일명이나 경로 확인해봐.</div>`;
-    console.error(err);
-  }
-}
-
-function parseCSV(text) {
-  const lines = text.trim().split(/\r?\n/);
-  if (!lines.length) return [];
-
-  const headers = splitCSVLine(lines[0]);
-
-  return lines.slice(1).map(line => {
-    const values = splitCSVLine(line);
-    const row = {};
-    headers.forEach((h, i) => {
-      row[h] = values[i] ?? "";
-    });
-    return row;
-  });
-}
-
-function splitCSVLine(line) {
-  const result = [];
-  let current = "";
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    const next = line[i + 1];
-
-    if (char === '"') {
-      if (inQuotes && next === '"') {
-        current += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (char === "," && !inQuotes) {
-      result.push(current.trim());
-      current = "";
-    } else {
-      current += char;
-    }
-  }
-
-  result.push(current.trim());
-  return result;
-}
-
-function fillSelectOptions() {
-  fillSelect(bookSelect, getUnique(allWords.map(v => v.book)), "교재 전체");
-  fillSelect(levelSelect, getUnique(allWords.map(v => v.level)), "레벨 전체");
-  updateChapterOptions();
-}
-
-function updateChapterOptions() {
-  let source = [...allWords];
-
-  if (bookSelect.value) {
-    source = source.filter(v => v.book === bookSelect.value);
-  }
-
-  if (levelSelect.value) {
-    source = source.filter(v => v.level === levelSelect.value);
-  }
-
-  const chapterValues = getUnique(source.map(v => v.chapterCode || v.chapterName).filter(Boolean));
-  const currentValue = chapterSelect.value;
-
-  fillSelect(chapterSelect, chapterValues, "챕터 전체");
-
-  if (chapterValues.includes(currentValue)) {
-    chapterSelect.value = currentValue;
-  }
-}
-
-function fillSelect(selectEl, values, defaultLabel) {
-  selectEl.innerHTML = `<option value="">${defaultLabel}</option>`;
-  values.forEach(v => {
-    const option = document.createElement("option");
-    option.value = v;
-    option.textContent = v;
-    selectEl.appendChild(option);
-  });
-}
-
-function getUnique(arr) {
-  return [...new Set(arr.filter(Boolean))];
-}
-
-function applyFilters() {
-  const book = bookSelect.value.trim().toLowerCase();
-  const level = levelSelect.value.trim().toLowerCase();
-  const chapter = chapterSelect.value.trim().toLowerCase();
-  const keyword = searchInput.value.trim().toLowerCase();
-
-  filteredWords = allWords.filter(item => {
-    const chapterValue = (item.chapterCode || item.chapterName || "").toLowerCase();
-
-    const matchBook = !book || item.book.toLowerCase() === book;
-    const matchLevel = !level || item.level.toLowerCase() === level;
-    const matchChapter = !chapter || chapterValue === chapter;
-    const matchKeyword =
-      !keyword ||
-      item.english.toLowerCase().includes(keyword) ||
-      item.meaning.toLowerCase().includes(keyword);
-
-    return matchBook && matchLevel && matchChapter && matchKeyword;
-  });
-
-  renderWords(filteredWords);
-  updateStats();
-}
-
-function updateStats() {
-  filteredCount.textContent = filteredWords.length;
-
-  if (chapterSelect.value) {
-    currentChapterText.textContent = chapterSelect.value;
-  } else {
-    currentChapterText.textContent = "-";
-  }
-}
-
-function renderWords(words) {
-  if (!words.length) {
-    wordList.innerHTML = `<div class="empty">조건에 맞는 단어가 없다.</div>`;
-    return;
-  }
-
-  wordList.innerHTML = words.map(item => `
-    <div class="word-card">
-      <div class="word-top">
-        <div>
-          <div class="word-en">${escapeHtml(item.english)}</div>
-          <div class="word-ko">${escapeHtml(item.meaning)}</div>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">현재 교재</div>
+          <div class="stat-value" id="statBook">-</div>
         </div>
-        <div class="badge">${escapeHtml(item.chapterCode || item.chapterName || "-")}</div>
+        <div class="stat-card">
+          <div class="stat-label">현재 레벨</div>
+          <div class="stat-value" id="statLevel">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">현재 챕터</div>
+          <div class="stat-value" id="statChapter">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">단어 수</div>
+          <div class="stat-value" id="statCount">0</div>
+        </div>
       </div>
 
-      <div class="word-meta">
-        <div class="meta-chip">${escapeHtml(item.book || "-")}</div>
-        <div class="meta-chip">${escapeHtml(item.level || "-")}</div>
-        <div class="meta-chip">${escapeHtml(item.chapterName || item.chapterCode || "-")}</div>
+      <div class="word-list" id="wordList"></div>
+    </section>
+
+    <!-- 5. 테스트 -->
+    <section class="section hidden" id="testSection">
+      <h2 class="section-title">단어 테스트</h2>
+      <p class="section-sub" id="testSubText"></p>
+
+      <div class="toolbar">
+        <button class="tool-btn" id="backToWordsBtn">단어 목록으로</button>
       </div>
-    </div>
-  `).join("");
-}
 
-function startTest() {
-  if (!filteredWords.length) {
-    alert("테스트할 단어가 없다.");
-    return;
-  }
+      <div class="test-shell">
+        <div class="test-progress" id="testProgress">0 / 0 문제</div>
+        <div class="test-question" id="testQuestion">word</div>
+        <input type="text" id="testAnswer" class="test-input" placeholder="뜻을 입력하세요" />
 
-  currentTestWords = [...filteredWords];
-  currentIndex = 0;
-  correctCount = 0;
-  answeredCurrent = false;
+        <div class="test-actions">
+          <button class="test-btn primary" id="checkAnswerBtn">정답 확인</button>
+          <button class="test-btn soft" id="nextQuestionBtn">다음 문제</button>
+        </div>
 
-  wordSection.classList.add("hidden");
-  testSection.classList.remove("hidden");
-  scoreBox.classList.add("hidden");
+        <div id="resultBox" style="display:none;"></div>
+      </div>
 
-  renderQuestion();
-}
+      <div class="score-box" id="scoreBox" style="display:none;">
+        <div class="score-big" id="scoreText">0점</div>
+        <div class="score-sub" id="scoreSubText">테스트 완료</div>
+      </div>
+    </section>
+  </div>
 
-function renderQuestion() {
-  if (currentIndex >= currentTestWords.length) {
-    finishTest();
-    return;
-  }
+  <script>
+    const CSV_URL = "words.csv";
 
-  const current = currentTestWords[currentIndex];
+    const KEY_MAP = {
+      book: "교재",
+      level: "레벨",
+      chapterCode: "구간",
+      chapterName: "Chapter",
+      english: "영어",
+      meaning: "뜻",
+      id: "id"
+    };
 
-  testProgress.textContent = `${currentIndex + 1} / ${currentTestWords.length} 문제`;
-  testQuestion.textContent = current.english;
-  testAnswer.value = "";
-  testAnswer.focus();
-  answeredCurrent = false;
+    const BOOK_LABELS = [
+      { raw: "T-map", label: "티맵", desc: "기본 학습 단어장" },
+      { raw: "V-map", label: "브이맵", desc: "확장 학습 단어장" },
+      { raw: "수능맵", label: "수능맵", desc: "수능 대비 단어장" }
+    ];
 
-  resultBox.className = "hidden";
-  resultBox.innerHTML = "";
-}
+    let allWords = [];
+    let currentBook = "";
+    let currentLevel = "";
+    let currentChapter = "";
+    let currentWords = [];
+    let filteredWords = [];
 
-function checkAnswer() {
-  if (currentIndex >= currentTestWords.length) return;
-  if (answeredCurrent) return;
+    let testWords = [];
+    let testIndex = 0;
+    let correctCount = 0;
+    let answeredCurrent = false;
 
-  const current = currentTestWords[currentIndex];
-  const userAnswer = normalizeText(testAnswer.value);
-  const correctAnswer = normalizeText(current.meaning);
+    const bookSection = document.getElementById("bookSection");
+    const levelSection = document.getElementById("levelSection");
+    const chapterSection = document.getElementById("chapterSection");
+    const wordSection = document.getElementById("wordSection");
+    const testSection = document.getElementById("testSection");
 
-  answeredCurrent = true;
+    const bookGrid = document.getElementById("bookGrid");
+    const levelGrid = document.getElementById("levelGrid");
+    const chapterGrid = document.getElementById("chapterGrid");
+    const wordList = document.getElementById("wordList");
 
-  if (userAnswer && correctAnswer.includes(userAnswer)) {
-    correctCount++;
-    resultBox.className = "result-box result-correct";
-    resultBox.textContent = `정답! ${current.meaning}`;
-  } else {
-    resultBox.className = "result-box result-wrong";
-    resultBox.textContent = `오답! 정답: ${current.meaning}`;
-  }
-}
+    const levelSubText = document.getElementById("levelSubText");
+    const chapterSubText = document.getElementById("chapterSubText");
+    const wordSubText = document.getElementById("wordSubText");
+    const testSubText = document.getElementById("testSubText");
 
-function nextQuestion() {
-  if (currentIndex >= currentTestWords.length) return;
+    const statBook = document.getElementById("statBook");
+    const statLevel = document.getElementById("statLevel");
+    const statChapter = document.getElementById("statChapter");
+    const statCount = document.getElementById("statCount");
 
-  if (!answeredCurrent) {
-    checkAnswer();
-    return;
-  }
+    const searchInput = document.getElementById("searchInput");
+    const startTestBtn = document.getElementById("startTestBtn");
+    const goLevelBtn = document.getElementById("goLevelBtn");
+    const goChapterBtn = document.getElementById("goChapterBtn");
+    const homeBtn = document.getElementById("homeBtn");
+    const backBtn = document.getElementById("backBtn");
+    const backToWordsBtn = document.getElementById("backToWordsBtn");
 
-  currentIndex++;
-  renderQuestion();
-}
+    const testProgress = document.getElementById("testProgress");
+    const testQuestion = document.getElementById("testQuestion");
+    const testAnswer = document.getElementById("testAnswer");
+    const checkAnswerBtn = document.getElementById("checkAnswerBtn");
+    const nextQuestionBtn = document.getElementById("nextQuestionBtn");
+    const resultBox = document.getElementById("resultBox");
+    const scoreBox = document.getElementById("scoreBox");
+    const scoreText = document.getElementById("scoreText");
+    const scoreSubText = document.getElementById("scoreSubText");
 
-function finishTest() {
-  const score = Math.round((correctCount / currentTestWords.length) * 100);
+    async function loadCSV() {
+      try {
+        const res = await fetch(CSV_URL);
+        const text = await res.text();
+        const rows = parseCSV(text);
 
-  testProgress.textContent = `테스트 완료`;
-  testQuestion.textContent = "끝!";
-  testAnswer.value = "";
-  resultBox.className = "hidden";
+        allWords = rows.map((row, idx) => ({
+          id: row[KEY_MAP.id] || idx + 1,
+          book: row[KEY_MAP.book] || "",
+          level: row[KEY_MAP.level] || "",
+          chapterCode: row[KEY_MAP.chapterCode] || "",
+          chapterName: row[KEY_MAP.chapterName] || "",
+          english: row[KEY_MAP.english] || "",
+          meaning: row[KEY_MAP.meaning] || ""
+        })).filter(v => v.book && v.level && v.english && v.meaning);
 
-  scoreBox.classList.remove("hidden");
-  scoreText.textContent = `${score}점`;
-  scoreSubText.textContent = `${currentTestWords.length}문제 중 ${correctCount}개 정답`;
-}
-
-function showWordSection() {
-  testSection.classList.add("hidden");
-  wordSection.classList.remove("hidden");
-}
-
-function shuffleFilteredWords() {
-  filteredWords = [...filteredWords].sort(() => Math.random() - 0.5);
-  renderWords(filteredWords);
-}
-
-function normalizeText(text) {
-  return String(text || "")
-    .replace(/\s+/g, "")
-    .trim()
-    .toLowerCase();
-}
-
-function escapeHtml(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-bookSelect.addEventListener("change", () => {
-  updateChapterOptions();
-  applyFilters();
-});
-
-levelSelect.addEventListener("change", () => {
-  updateChapterOptions();
-  applyFilters();
-});
-
-chapterSelect.addEventListener("change", applyFilters);
-searchInput.addEventListener("input", applyFilters);
-
-showWordsBtn.addEventListener("click", showWordSection);
-startTestBtn.addEventListener("click", startTest);
-shuffleBtn.addEventListener("click", shuffleFilteredWords);
-checkAnswerBtn.addEventListener("click", checkAnswer);
-nextQuestionBtn.addEventListener("click", nextQuestion);
-backToWordsBtn.addEventListener("click", showWordSection);
-
-testAnswer.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    if (!answeredCurrent) {
-      checkAnswer();
-    } else {
-      nextQuestion();
+        renderBookCards();
+      } catch (err) {
+        bookGrid.innerHTML = `<div class="empty-box">CSV 불러오기 실패. 파일명이나 헤더를 확인해봐.</div>`;
+        console.error(err);
+      }
     }
-  }
-});
 
-loadCSV();
-</script>
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (!lines.length) return [];
+
+      const headers = splitCSVLine(lines[0]);
+
+      return lines.slice(1).map(line => {
+        const values = splitCSVLine(line);
+        const row = {};
+        headers.forEach((h, i) => {
+          row[h] = values[i] ?? "";
+        });
+        return row;
+      });
+    }
+
+    function splitCSVLine(line) {
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          result.push(current.trim());
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+
+      result.push(current.trim());
+      return result;
+    }
+
+    function renderBookCards() {
+      bookGrid.innerHTML = BOOK_LABELS.map(item => `
+        <button class="choice-card" onclick="selectBook('${escapeAttr(item.raw)}')">
+          <div>
+            <div class="choice-label">${item.label}</div>
+            <div class="choice-desc">${item.desc}</div>
+          </div>
+          <div class="choice-chip">선택하기</div>
+        </button>
+      `).join("");
+    }
+
+    function selectBook(book) {
+      currentBook = book;
+      currentLevel = "";
+      currentChapter = "";
+      currentWords = [];
+      filteredWords = [];
+
+      const levels = [...new Set(
+        allWords
+          .filter(v => normalize(v.book) === normalize(book))
+          .map(v => v.level)
+          .filter(Boolean)
+      )];
+
+      levelSubText.textContent = `${getBookLabel(book)}의 레벨을 골라줘.`;
+
+      levelGrid.innerHTML = levels.length
+        ? levels.map(level => `
+            <button class="choice-card" onclick="selectLevel('${escapeAttr(level)}')">
+              <div>
+                <div class="choice-label">${escapeHtml(level)}</div>
+                <div class="choice-desc">이 레벨 단어장으로 들어가기</div>
+              </div>
+              <div class="choice-chip">선택하기</div>
+            </button>
+          `).join("")
+        : `<div class="empty-box">해당 교재에 레벨 데이터가 없다.</div>`;
+
+      showSection("level");
+    }
+
+    function selectLevel(level) {
+      currentLevel = level;
+      currentChapter = "";
+      currentWords = [];
+      filteredWords = [];
+
+      const chapterItems = allWords
+        .filter(v => normalize(v.book) === normalize(currentBook) && normalize(v.level) === normalize(level))
+        .map(v => ({
+          code: v.chapterCode || "",
+          name: v.chapterName || ""
+        }));
+
+      const uniqueChapters = [];
+      const seen = new Set();
+
+      chapterItems.forEach(item => {
+        const key = `${item.code}||${item.name}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          uniqueChapters.push(item);
+        }
+      });
+
+      chapterSubText.textContent = `${getBookLabel(currentBook)} · ${currentLevel} 챕터를 골라줘.`;
+
+      chapterGrid.innerHTML = uniqueChapters.length
+        ? uniqueChapters.map(item => `
+            <button class="chapter-btn" onclick="selectChapter('${escapeAttr(item.code)}','${escapeAttr(item.name)}')">
+              <strong>${escapeHtml(item.code || item.name || "-")}</strong>
+              <span>${escapeHtml(item.name || "챕터 선택")}</span>
+            </button>
+          `).join("")
+        : `<div class="empty-box">해당 레벨에 챕터 데이터가 없다.</div>`;
+
+      showSection("chapter");
+    }
+
+    function selectChapter(code, name) {
+      currentChapter = code || name;
+
+      currentWords = allWords.filter(v =>
+        normalize(v.book) === normalize(currentBook) &&
+        normalize(v.level) === normalize(currentLevel) &&
+        normalize(v.chapterCode || v.chapterName) === normalize(currentChapter)
+      );
+
+      filteredWords = [...currentWords];
+
+      wordSubText.textContent = `${getBookLabel(currentBook)} · ${currentLevel} · ${currentChapter}`;
+      statBook.textContent = getBookLabel(currentBook);
+      statLevel.textContent = currentLevel;
+      statChapter.textContent = currentChapter;
+      statCount.textContent = filteredWords.length;
+
+      searchInput.value = "";
+      renderWordList(filteredWords);
+      showSection("word");
+    }
+
+    function renderWordList(words) {
+      statCount.textContent = words.length;
+
+      if (!words.length) {
+        wordList.innerHTML = `<div class="empty-box">조건에 맞는 단어가 없다.</div>`;
+        return;
+      }
+
+      wordList.innerHTML = words.map(item => `
+        <div class="word-card">
+          <div class="word-top">
+            <div>
+              <div class="word-en">${escapeHtml(item.english)}</div>
+              <div class="word-ko">${escapeHtml(item.meaning)}</div>
+            </div>
+            <div class="badge">${escapeHtml(item.chapterCode || item.chapterName || "-")}</div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta-chip">${escapeHtml(getBookLabel(item.book))}</div>
+            <div class="meta-chip">${escapeHtml(item.level)}</div>
+            <div class="meta-chip">${escapeHtml(item.chapterName || item.chapterCode || "-")}</div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filterWords() {
+      const keyword = normalize(searchInput.value);
+
+      if (!keyword) {
+        filteredWords = [...currentWords];
+      } else {
+        filteredWords = currentWords.filter(item =>
+          normalize(item.english).includes(keyword) ||
+          normalize(item.meaning).includes(keyword)
+        );
+      }
+
+      renderWordList(filteredWords);
+    }
+
+    function startTest() {
+      if (!filteredWords.length) {
+        alert("테스트할 단어가 없다.");
+        return;
+      }
+
+      testWords = [...filteredWords];
+      testIndex = 0;
+      correctCount = 0;
+      answeredCurrent = false;
+
+      testSubText.textContent = `${getBookLabel(currentBook)} · ${currentLevel} · ${currentChapter}`;
+      scoreBox.style.display = "none";
+      showSection("test");
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      if (testIndex >= testWords.length) {
+        finishTest();
+        return;
+      }
+
+      const current = testWords[testIndex];
+      testProgress.textContent = `${testIndex + 1} / ${testWords.length} 문제`;
+      testQuestion.textContent = current.english;
+      testAnswer.value = "";
+      testAnswer.focus();
+      answeredCurrent = false;
+      resultBox.style.display = "none";
+      resultBox.className = "";
+      resultBox.textContent = "";
+    }
+
+    function checkAnswer() {
+      if (testIndex >= testWords.length || answeredCurrent) return;
+
+      const current = testWords[testIndex];
+      const userAnswer = normalize(testAnswer.value);
+      const correctAnswer = normalize(current.meaning);
+
+      answeredCurrent = true;
+
+      if (userAnswer && correctAnswer.includes(userAnswer)) {
+        correctCount++;
+        resultBox.className = "result-box result-correct";
+        resultBox.textContent = `정답! ${current.meaning}`;
+      } else {
+        resultBox.className = "result-box result-wrong";
+        resultBox.textContent = `오답! 정답: ${current.meaning}`;
+      }
+
+      resultBox.style.display = "block";
+    }
+
+    function nextQuestion() {
+      if (testIndex >= testWords.length) return;
+
+      if (!answeredCurrent) {
+        checkAnswer();
+        return;
+      }
+
+      testIndex++;
+      renderQuestion();
+    }
+
+    function finishTest() {
+      const score = Math.round((correctCount / testWords.length) * 100);
+
+      testProgress.textContent = "테스트 완료";
+      testQuestion.textContent = "끝!";
+      testAnswer.value = "";
+      resultBox.style.display = "none";
+
+      scoreBox.style.display = "block";
+      scoreText.textContent = `${score}점`;
+      scoreSubText.textContent = `${testWords.length}문제 중 ${correctCount}개 정답`;
+    }
+
+    function showSection(type) {
+      bookSection.classList.add("hidden");
+      levelSection.classList.add("hidden");
+      chapterSection.classList.add("hidden");
+      wordSection.classList.add("hidden");
+      testSection.classList.add("hidden");
+
+      if (type === "book") bookSection.classList.remove("hidden");
+      if (type === "level") levelSection.classList.remove("hidden");
+      if (type === "chapter") chapterSection.classList.remove("hidden");
+      if (type === "word") wordSection.classList.remove("hidden");
+      if (type === "test") testSection.classList.remove("hidden");
+    }
+
+    function goHome() {
+      currentBook = "";
+      currentLevel = "";
+      currentChapter = "";
+      currentWords = [];
+      filteredWords = [];
+      showSection("book");
+    }
+
+    function goBack() {
+      if (!testSection.classList.contains("hidden")) {
+        showSection("word");
+        return;
+      }
+      if (!wordSection.classList.contains("hidden")) {
+        showSection("chapter");
+        return;
+      }
+      if (!chapterSection.classList.contains("hidden")) {
+        showSection("level");
+        return;
+      }
+      if (!levelSection.classList.contains("hidden")) {
+        showSection("book");
+      }
+    }
+
+    function getBookLabel(raw) {
+      const found = BOOK_LABELS.find(v => normalize(v.raw) === normalize(raw));
+      return found ? found.label : raw;
+    }
+
+    function normalize(value) {
+      return String(value || "").replace(/\s+/g, "").trim().toLowerCase();
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(str) {
+      return String(str ?? "").replaceAll("'", "\\'");
+    }
+
+    searchInput.addEventListener("input", filterWords);
+    startTestBtn.addEventListener("click", startTest);
+    goLevelBtn.addEventListener("click", () => showSection("level"));
+    goChapterBtn.addEventListener("click", () => showSection("chapter"));
+    backToWordsBtn.addEventListener("click", () => showSection("word"));
+    homeBtn.addEventListener("click", goHome);
+    backBtn.addEventListener("click", goBack);
+    checkAnswerBtn.addEventListener("click", checkAnswer);
+    nextQuestionBtn.addEventListener("click", nextQuestion);
+
+    testAnswer.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        if (!answeredCurrent) {
+          checkAnswer();
+        } else {
+          nextQuestion();
+        }
+      }
+    });
+
+    loadCSV();
+
+    window.selectBook = selectBook;
+    window.selectLevel = selectLevel;
+    window.selectChapter = selectChapter;
+  </script>
 </body>
 </html>
