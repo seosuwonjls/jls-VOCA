@@ -526,6 +526,21 @@ const BOOK_FILES = {
 };
 
 const FORCE_POS = {
+  "windy": "adjective",
+"amazing": "adjective",
+"tiny": "adjective",
+"traffic": "noun",
+"topic": "noun",
+"speech": "noun",
+"remove": "verb",
+"follow": "verb",
+"hot": "adjective",
+"cheap": "adjective",
+"short": "adjective",
+"seed": "noun",
+  "favorite": "adjective",
+"hospital": "noun",
+
   "such as": "preposition",
   "above": "preposition",
   "overnight": "adverb",
@@ -672,6 +687,132 @@ function detectPos(word, meaningKor = ""){
   if(!key && !kor) return "";
 
   if(FORCE_POS[key]) return FORCE_POS[key];
+
+  const meaningBasedPosMap = {
+  fall: {
+    verb: /떨어지다|쓰러지다|넘어지다|감소하다|내리다/,
+    noun: /가을|낙하|폭포|하락/
+  },
+  count: {
+    verb: /세다|계산하다/,
+    noun: /수|총수|계산/
+  },
+  win: {
+    verb: /이기다|획득하다/,
+    noun: /승리/
+  },
+  windy: {
+    adjective: /바람이 많이 부는|바람 부는/
+  },
+  follow: {
+    verb: /따라가다|따르다|이해하다|지켜보다/
+  },
+  hot: {
+    adjective: /뜨거운|더운|매운|인기 있는/
+  },
+  inside: {
+    preposition: /~안에/,
+    adverb: /안에|안으로|실내에/,
+    noun: /안쪽|내부/
+  },
+  leave: {
+    verb: /떠나다|남기다|두고 가다/,
+    noun: /휴가|허가/
+  },
+  near: {
+    preposition: /~근처에|~가까이에/,
+    adjective: /가까운/,
+    adverb: /가까이/
+  },
+  ride: {
+    verb: /타다/,
+    noun: /탐|승차|놀이기구/
+  },
+  seed: {
+    noun: /씨앗|종자/
+  },
+  traffic: {
+    noun: /교통|차량 흐름|트래픽/
+  },
+  amazing: {
+    adjective: /놀라운|굉장한|멋진/
+  },
+  check: {
+    verb: /확인하다|점검하다|검사하다/,
+    noun: /점검|확인|수표/
+  },
+  favorite: {
+    adjective: /가장 좋아하는|매우 좋아하는/,
+    noun: /우승 후보|애장품/
+  },
+  hospital: {
+    noun: /병원/
+  },
+  principal: {
+    noun: /교장|교장선생님|원금/,
+    adjective: /주된|주요한/
+  },
+  shake: {
+    verb: /흔들다|떨다/,
+    noun: /흔들기|악수|셰이크/
+  },
+  speech: {
+    noun: /연설|말|화법/
+  },
+  surprise: {
+    verb: /놀라게 하다/,
+    noun: /놀람|뜻밖의 일|서프라이즈/
+  },
+  tiny: {
+    adjective: /아주 작은|작은/
+  },
+  topic: {
+    noun: /주제|화제/
+  },
+  upstairs: {
+    adverb: /위층에|위층으로/,
+    adjective: /위층의/,
+    noun: /위층/
+  },
+  around: {
+    preposition: /~주위에|~둘레에|~쯤/,
+    adverb: /주위에|여기저기|대략/
+  },
+  bother: {
+    verb: /괴롭히다|신경 쓰이게 하다|귀찮게 하다/,
+    noun: /귀찮음|성가심/
+  },
+  cheap: {
+    adjective: /싼|저렴한/
+  },
+  hiking: {
+    noun: /하이킹|등산/
+  },
+  "public place": {
+    noun: /공공장소|공공 장소/
+  },
+  remove: {
+    verb: /제거하다|치우다|벗기다/
+  },
+  short: {
+    adjective: /짧은|키가 작은|부족한/
+  },
+  still: {
+    adverb: /여전히|아직도/,
+    adjective: /조용한|가만한/,
+    noun: /증류기/
+  }
+};
+
+if (meaningBasedPosMap[key]) {
+  const rules = meaningBasedPosMap[key];
+  if (rules.verb && rules.verb.test(kor)) return "verb";
+  if (rules.noun && rules.noun.test(kor)) return "noun";
+  if (rules.adjective && rules.adjective.test(kor)) return "adjective";
+  if (rules.adverb && rules.adverb.test(kor)) return "adverb";
+  if (rules.preposition && rules.preposition.test(kor)) return "preposition";
+}
+
 
   const nounVerbMeaningMap = {
   drop: {
