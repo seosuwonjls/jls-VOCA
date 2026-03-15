@@ -673,6 +673,140 @@ function detectPos(word, meaningKor = ""){
 
   if(FORCE_POS[key]) return FORCE_POS[key];
 
+  const nounVerbMeaningMap = {
+  drop: {
+    verb: /떨어뜨리다|떨어지다|그만두다|중단하다|내리다|خفض|버리다/,
+    noun: /방울|낙하|하락|감소/
+  },
+  change: {
+    verb: /바꾸다|변경하다|교환하다/,
+    noun: /변화|거스름돈|잔돈/
+  },
+  increase: {
+    verb: /증가시키다|늘리다/,
+    noun: /증가|상승/
+  },
+  support: {
+    verb: /지지하다|부양하다|떠받치다/,
+    noun: /지지|지원|후원/
+  },
+  control: {
+    verb: /통제하다|조절하다|관리하다/,
+    noun: /통제|조절|관리|대조군/
+  },
+  record: {
+    verb: /기록하다|녹음하다/,
+    noun: /기록|음반|성적/
+  },
+  present: {
+    verb: /제시하다|발표하다|수여하다/,
+    noun: /현재|선물/
+  },
+  address: {
+    verb: /다루다|연설하다|주소를 쓰다/,
+    noun: /주소|연설/
+  },
+  object: {
+    verb: /반대하다/,
+    noun: /물체|목적어|대상/
+  },
+  subject: {
+    verb: /복종시키다|지배하다/,
+    noun: /주제|과목|주어|대상/
+  },
+  permit: {
+    verb: /허락하다/,
+    noun: /허가증|허가/
+  },
+  export: {
+    verb: /수출하다/,
+    noun: /수출품|수출/
+  },
+  import: {
+    verb: /수입하다/,
+    noun: /수입품|수입|중요성/
+  },
+  survey: {
+    verb: /조사하다|둘러보다/,
+    noun: /조사|측량/
+  },
+  impact: {
+    verb: /영향을 미치다|충돌하다/,
+    noun: /영향|충격/
+  },
+  process: {
+    verb: /처리하다|가공하다/,
+    noun: /과정|절차/
+  },
+  project: {
+    verb: /투영하다|예상하다/,
+    noun: /프로젝트|계획/
+  },
+  protest: {
+    verb: /항의하다|반대하다/,
+    noun: /항의|시위/
+  },
+  reply: {
+    verb: /대답하다|응답하다/,
+    noun: /대답|응답/
+  },
+  return: {
+    verb: /돌아오다|반환하다|되돌리다/,
+    noun: /귀환|반환|수익|반품/
+  },
+  smell: {
+    verb: /냄새가 나다|냄새를 맡다/,
+    noun: /냄새/
+  },
+  taste: {
+    verb: /맛이 나다|맛보다/,
+    noun: /맛|취향/
+  },
+  hope: {
+    verb: /희망하다|바라다/,
+    noun: /희망/
+  },
+  answer: {
+    verb: /대답하다|응답하다/,
+    noun: /대답|정답/
+  },
+  plan: {
+    verb: /계획하다/,
+    noun: /계획/
+  },
+  report: {
+    verb: /보고하다|신고하다/,
+    noun: /보고서|보도/
+  },
+  design: {
+    verb: /디자인하다|설계하다/,
+    noun: /디자인|설계/
+  },
+  study: {
+    verb: /공부하다|연구하다/,
+    noun: /연구|서재|공부/
+  },
+  love: {
+    verb: /사랑하다|매우 좋아하다/,
+    noun: /사랑/
+  },
+  walk: {
+    verb: /걷다/,
+    noun: /산책|걷기/
+  },
+  call: {
+    verb: /부르다|전화하다/,
+    noun: /전화|부름|요구/
+  }
+};
+
+if (nounVerbMeaningMap[key]) {
+  const rule = nounVerbMeaningMap[key];
+  if (rule.verb && rule.verb.test(kor)) return "verb";
+  if (rule.noun && rule.noun.test(kor)) return "noun";
+}
+
+
   if(
   key === "air conditioner" ||
   key === "credit card" ||
