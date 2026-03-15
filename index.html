@@ -490,6 +490,12 @@ h1{
 </div>
 
 <script>
+const BOOK_FILES = {
+  "T-map": "./vocab.csv",
+  "V-map": "./vmap.csv",
+  "절대수능-map": "./suneung.csv"
+};
+
 let rawData = [];
 
 let state = {
@@ -499,7 +505,7 @@ let state = {
   chapter: null,
   hideWord: false,
   hideMeaning: false,
-  mode: "browse" // browse | test | result
+  mode: "browse"
 };
 
 let testState = {
@@ -666,12 +672,7 @@ function renderPath(){
 }
 
 function renderBooks(){
-  const books = getUnique(rawData, "교재");
-
-  if(!books.length){
-    app.innerHTML = `<div class="empty">데이터가 없습니다.</div>`;
-    return;
-  }
+  const books = Object.keys(BOOK_FILES);
 
   app.innerHTML = `
     <div class="grid">
@@ -683,7 +684,7 @@ function renderBooks(){
 }
 
 function renderLevels(){
-  const rows = rawData.filter(x => x["교재"] === state.book);
+  const rows = rawData.filter(x => x["교재"] === state.book || !x["교재"]);
   const levels = getUnique(rows, "레벨");
 
   if(!levels.length){
@@ -702,7 +703,7 @@ function renderLevels(){
 
 function renderSections(){
   const rows = rawData.filter(x =>
-    x["교재"] === state.book &&
+    (x["교재"] === state.book || !x["교재"]) &&
     x["레벨"] === state.level
   );
   const sections = getUnique(rows, "구간");
@@ -723,7 +724,7 @@ function renderSections(){
 
 function renderChapters(){
   const rows = rawData.filter(x =>
-    x["교재"] === state.book &&
+    (x["교재"] === state.book || !x["교재"]) &&
     x["레벨"] === state.level &&
     x["구간"] === state.section
   );
@@ -746,7 +747,7 @@ function renderChapters(){
 
 function getCurrentChapterRows(){
   return rawData.filter(x =>
-    x["교재"] === state.book &&
+    (x["교재"] === state.book || !x["교재"]) &&
     x["레벨"] === state.level &&
     x["구간"] === state.section &&
     x["Chapter"] === state.chapter
@@ -783,9 +784,7 @@ function buildTestQuestions(rows){
   return shuffled.map(row => {
     const correct = row["뜻"];
     const wrongPool = shuffle(
-      usable
-        .map(x => x["뜻"])
-        .filter(v => v && v !== correct)
+      usable.map(x => x["뜻"]).filter(v => v && v !== correct)
     ).slice(0, 3);
 
     const choices = shuffle([correct, ...wrongPool]);
@@ -924,6 +923,16 @@ function render(){
   if(state.mode === "result") return renderResult();
 }
 
+function resetLowerState(){
+  state.level = null;
+  state.section = null;
+  state.chapter = null;
+  state.hideWord = false;
+  state.hideMeaning = false;
+  state.mode = "browse";
+  rawData = [];
+}
+
 function goHome(){
   state = {
     book: null,
@@ -934,38 +943,96 @@ function goHome(){
     hideMeaning: false,
     mode: "browse"
   };
+  rawData = [];
   render();
 }
 
-function loadDataToState(type, value){
+async function loadBookData(bookName){
+  const file = BOOK_FILES[bookName];
+
+  if(!file){
+    app.innerHTML = `<div class="empty">해당 교재 파일 설정이 없다.</div>`;
+    return false;
+  }
+
+  app.innerHTML = `<div class="loading">단어 데이터를 불러오는 중...</div>`;
+
+  try{
+    const res = await fetch(file + "?ts=" + Date.now());
+    const text = await res.text();
+    const rows = parseCSV(text);
+
+    if(rows.length < 2){
+      app.innerHTML = `<div class="empty">${bookName} 파일 데이터가 비어있다.</div>`;
+      return false;
+    }
+
+    const headers = rows[0].map(normalizeHeader);
+    const required = ["교재", "레벨", "구간", "Chapter", "영어", "뜻"];
+    const missing = required.filter(x => !headers.includes(x));
+
+    if(missing.length){
+      app.innerHTML = `<div class="empty">${bookName} CSV 헤더가 맞지 않다.<br>누락: ${missing.join(", ")}</div>`;
+      return false;
+    }
+
+    rawData = rows.slice(1)
+      .filter(r => r.some(v => String(v).trim() !== ""))
+      .map(r => {
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = String(r[i] || "").trim();
+        });
+        return obj;
+      });
+
+    return true;
+  }catch(e){
+    app.innerHTML = `<div class="empty">데이터를 불러오지 못했다.<br>${bookName} 파일명을 확인해라.</div>`;
+    return false;
+  }
+}
+
+async function loadDataToState(type, value){
   if(type === "book"){
     state.book = value;
-    state.level = null;
-    state.section = null;
-    state.chapter = null;
-    state.hideWord = false;
-    state.hideMeaning = false;
-    state.mode = "browse";
-  } else if(type === "level"){
+    resetLowerState();
+
+    const ok = await loadBookData(value);
+    if(ok){
+      render();
+    }
+    return;
+  }
+
+  if(type === "level"){
     state.level = value;
     state.section = null;
     state.chapter = null;
     state.hideWord = false;
     state.hideMeaning = false;
     state.mode = "browse";
-  } else if(type === "section"){
+    render();
+    return;
+  }
+
+  if(type === "section"){
     state.section = value;
     state.chapter = null;
     state.hideWord = false;
     state.hideMeaning = false;
     state.mode = "browse";
-  } else if(type === "chapter"){
+    render();
+    return;
+  }
+
+  if(type === "chapter"){
     state.chapter = value;
     state.hideWord = false;
     state.hideMeaning = false;
     state.mode = "browse";
+    render();
   }
-  render();
 }
 
 controls.addEventListener("click", function(e){
@@ -974,17 +1041,14 @@ controls.addEventListener("click", function(e){
 
   const action = btn.dataset.action;
 
-  if(action === "home") goHome();
+  if(action === "home"){
+    goHome();
+    return;
+  }
 
   if(action === "back-books"){
-    state.book = null;
-    state.level = null;
-    state.section = null;
-    state.chapter = null;
-    state.hideWord = false;
-    state.hideMeaning = false;
-    state.mode = "browse";
-    render();
+    goHome();
+    return;
   }
 
   if(action === "back-levels"){
@@ -995,6 +1059,7 @@ controls.addEventListener("click", function(e){
     state.hideMeaning = false;
     state.mode = "browse";
     render();
+    return;
   }
 
   if(action === "back-sections"){
@@ -1004,6 +1069,7 @@ controls.addEventListener("click", function(e){
     state.hideMeaning = false;
     state.mode = "browse";
     render();
+    return;
   }
 
   if(action === "back-chapters"){
@@ -1012,27 +1078,32 @@ controls.addEventListener("click", function(e){
     state.hideMeaning = false;
     state.mode = "browse";
     render();
+    return;
   }
 
   if(action === "toggle-meaning"){
     state.hideMeaning = !state.hideMeaning;
     renderControls();
     renderWords();
+    return;
   }
 
   if(action === "toggle-word"){
     state.hideWord = !state.hideWord;
     renderControls();
     renderWords();
+    return;
   }
 
   if(action === "start-test"){
     startTest();
+    return;
   }
 
   if(action === "exit-test"){
     state.mode = "browse";
     render();
+    return;
   }
 
   if(action === "restart-test"){
@@ -1040,7 +1111,7 @@ controls.addEventListener("click", function(e){
   }
 });
 
-app.addEventListener("click", function(e){
+app.addEventListener("click", async function(e){
   const target = e.target.closest("[data-type]");
   if(!target) return;
 
@@ -1057,47 +1128,15 @@ app.addEventListener("click", function(e){
     return;
   }
 
-  loadDataToState(type, value);
+  await loadDataToState(type, value);
 });
 
-async function loadData(){
-  try{
-    const res = await fetch("./vocab.csv?ts=" + Date.now());
-    const text = await res.text();
-    const rows = parseCSV(text);
-
-    if(rows.length < 2){
-      app.innerHTML = `<div class="empty">CSV 데이터가 비어있다.</div>`;
-      return;
-    }
-
-    const headers = rows[0].map(normalizeHeader);
-    const required = ["교재", "레벨", "구간", "Chapter", "영어", "뜻"];
-    const missing = required.filter(x => !headers.includes(x));
-
-    if(missing.length){
-      app.innerHTML = `<div class="empty">CSV 헤더가 맞지 않다.<br>누락: ${missing.join(", ")}</div>`;
-      return;
-    }
-
-    rawData = rows.slice(1)
-      .filter(r => r.some(v => String(v).trim() !== ""))
-      .map(r => {
-        const obj = {};
-        headers.forEach((h, i) => {
-          obj[h] = String(r[i] || "").trim();
-        });
-        return obj;
-      });
-
-    window.speechSynthesis?.getVoices();
-    render();
-  }catch(e){
-    app.innerHTML = `<div class="empty">데이터를 불러오지 못했다.<br>파일 이름이 vocab.csv인지 확인해라.</div>`;
-  }
+function init(){
+  window.speechSynthesis?.getVoices();
+  render();
 }
 
-loadData();
+init();
 </script>
 </body>
 </html>
