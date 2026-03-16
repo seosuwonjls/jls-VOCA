@@ -295,12 +295,12 @@ body{
 
 .word{
   font-family:'Poppins','GeekbleMalang',sans-serif;
-  font-size:clamp(28px,4vw,42px);
+  font-size:clamp(24px,3.5w,40px);
   font-weight:700;
-  word-break:break-word;
+  word-break:keep-all;
   color:#2447a6;
   letter-spacing:-0.4px;
-  line-height:1.18;
+  line-height:1.15;
 }
 
 .meaning{
@@ -507,8 +507,8 @@ body{
 
 @media (max-width:460px){
   .grid{grid-template-columns:1fr 1fr;}
-  .word{font-size:30px;}
-  .meaning{font-size:20px;}
+  .word{font-size:clamp(22px,5vw,30px);}
+  .meaning{font-size:clamp(16px,4vw,20px);}
 }
 </style>
 </head>
@@ -1457,7 +1457,6 @@ function renderWords(){
 
     metaEl.innerHTML = `
       <div class="pos">품사: ${escapeHtml(formatPos(meta.pos))}</div>
-      <div class="example">예문: ${escapeHtml(meta.example)}</div>
     `;
   });
 }
