@@ -454,6 +454,13 @@ body{
   font-size:18px;
 }
 
+.result-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+}
+
 @media (max-width:700px){
   .wrap{padding:0 12px 22px;}
   .topbar{
@@ -528,7 +535,8 @@ let testState = {
   currentIndex: 0,
   score: 0,
   selected: null,
-  answered: false
+  answered: false,
+  wrongRows: []
 };
 
 const app = document.getElementById("app");
@@ -661,6 +669,14 @@ function renderControls(){
 
   if(state.chapter && state.mode === "result"){
     html += `<button class="btn" data-action="restart-test">다시 테스트</button>`;
+    html += `<button class="btn" data-action="restart-wrong">오답만 다시 테스트</button>`;
+    html += `<button class="btn" data-action="show-wrong-list">오답 리스트</button>`;
+    html += `<button class="btn" data-action="exit-test">단어장으로 돌아가기</button>`;
+  }
+
+  if(state.chapter && state.mode === "wrong-list"){
+    html += `<button class="btn" data-action="restart-wrong">오답만 다시 테스트</button>`;
+    html += `<button class="btn" data-action="back-result">결과로 돌아가기</button>`;
     html += `<button class="btn" data-action="exit-test">단어장으로 돌아가기</button>`;
   }
 
@@ -675,6 +691,7 @@ function renderPath(){
   if(state.chapter) parts.push(`Chapter ${state.chapter}`);
   if(state.mode === "test") parts.push("테스트");
   if(state.mode === "result") parts.push("결과");
+  if(state.mode === "wrong-list") parts.push("오답 리스트");
   pathEl.textContent = parts.join(" > ");
 }
 
@@ -784,40 +801,57 @@ function renderWords(){
   `;
 }
 
-function buildTestQuestions(rows){
+function buildTestQuestions(rows, poolRows = rows){
   const usable = rows.filter(r => r["영어"] && r["뜻"]);
+  const choicePoolRows = poolRows.filter(r => r["영어"] && r["뜻"]);
   const shuffled = shuffle(usable);
 
   return shuffled.map(row => {
     const correct = row["뜻"];
-    const wrongPool = shuffle(
-      usable.map(x => x["뜻"]).filter(v => v && v !== correct)
+    let wrongPool = shuffle(
+      choicePoolRows.map(x => x["뜻"]).filter(v => v && v !== correct)
     ).slice(0, 3);
+
+    while(wrongPool.length < 3 && choicePoolRows.length > 1){
+      const extra = shuffle(
+        choicePoolRows.map(x => x["뜻"]).filter(v => v && v !== correct && !wrongPool.includes(v))
+      )[0];
+      if(!extra) break;
+      wrongPool.push(extra);
+    }
 
     const choices = shuffle([correct, ...wrongPool]);
 
     return {
       word: row["영어"],
       correct,
-      choices
+      choices,
+      row
     };
   });
 }
 
-function startTest(){
-  const rows = getCurrentChapterRows();
+function startTest(customRows = null){
+  const chapterRows = getCurrentChapterRows();
+  const rows = customRows || chapterRows;
 
-  if(rows.length < 4){
+  if(!customRows && chapterRows.length < 4){
     alert("테스트를 하려면 해당 Chapter에 단어가 최소 4개 있어야 한다.");
     return;
   }
 
+  if(customRows && rows.length === 0){
+    alert("오답이 없다.");
+    return;
+  }
+
   testState = {
-    questions: buildTestQuestions(rows),
+    questions: buildTestQuestions(rows, chapterRows),
     currentIndex: 0,
     score: 0,
     selected: null,
-    answered: false
+    answered: false,
+    wrongRows: []
   };
 
   state.mode = "test";
@@ -879,6 +913,8 @@ function handleChoice(choice){
 
   if(choice === q.correct){
     testState.score += 1;
+  }else{
+    testState.wrongRows.push(q.row);
   }
 
   renderTest();
@@ -900,17 +936,52 @@ function handleChoice(choice){
   }, 800);
 }
 
+function renderWrongList(){
+  const wrongRows = testState.wrongRows || [];
+
+  if(!wrongRows.length){
+    app.innerHTML = `
+      <div class="test-result">
+        <div class="result-score">Perfect</div>
+        <div class="result-sub">오답이 없다</div>
+        <div class="result-buttons">
+          <button class="btn" data-action="back-result">결과로 돌아가기</button>
+          <button class="btn" data-action="exit-test">단어장으로 돌아가기</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="word-grid">
+      ${wrongRows.map((row, i) => `
+        <div class="word-card">
+          <div class="word-left">
+            <div class="word">${i + 1}. ${escapeHtml(row["영어"])}</div>
+            <div class="meaning">${escapeHtml(row["뜻"])}</div>
+          </div>
+          <button class="speak-btn" data-type="speak" data-value="${escapeHtml(row["영어"])}">🔊</button>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 function renderResult(){
   const total = testState.questions.length;
   const score = testState.score;
   const percent = total ? Math.round((score / total) * 100) : 0;
+  const wrongCount = (testState.wrongRows || []).length;
 
   app.innerHTML = `
     <div class="test-result">
       <div class="result-score">${score} / ${total}</div>
-      <div class="result-sub">정답률 ${percent}%</div>
+      <div class="result-sub">정답률 ${percent}% · 오답 ${wrongCount}개</div>
       <div class="result-buttons">
         <button class="btn" data-action="restart-test">다시 테스트</button>
+        <button class="btn" data-action="restart-wrong">오답만 다시 테스트</button>
+        <button class="btn" data-action="show-wrong-list">오답 리스트</button>
         <button class="btn" data-action="exit-test">단어장으로 돌아가기</button>
       </div>
     </div>
@@ -929,6 +1000,7 @@ function render(){
   if(state.mode === "browse") return renderWords();
   if(state.mode === "test") return renderTest();
   if(state.mode === "result") return renderResult();
+  if(state.mode === "wrong-list") return renderWrongList();
 }
 
 function resetLowerState(){
@@ -1096,7 +1168,10 @@ controls.addEventListener("click", function(e){
 
   if(action === "start-test"){ startTest(); return; }
   if(action === "exit-test"){ state.mode = "browse"; render(); return; }
-  if(action === "restart-test"){ startTest(); }
+  if(action === "restart-test"){ startTest(); return; }
+  if(action === "restart-wrong"){ startTest(testState.wrongRows); return; }
+  if(action === "show-wrong-list"){ state.mode = "wrong-list"; render(); return; }
+  if(action === "back-result"){ state.mode = "result"; render(); return; }
 });
 
 app.addEventListener("click", async function(e){
