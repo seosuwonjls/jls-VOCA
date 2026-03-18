@@ -24,24 +24,30 @@
   font-style:normal;
   font-display:swap;
 }
+
 html{
--webkit-text-size-adjust:100%;
+  -webkit-text-size-adjust:100%;
 }
 
 body{
-font-size:16px;
+  font-size:16px;
+  margin:0;
+  font-family:'GeekbleMalang','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+  background:radial-gradient(circle at top, #fbfdff 0%, #edf4ff 42%, #e6eefc 100%);
+  color:#111;
 }
 
 .word{
-font-size:28px;
-font-weight:700;
+  font-size:28px;
+  font-weight:700;
 }
 
 .card{
-padding:18px;
-max-width:420px;
-margin:auto;
+  padding:18px;
+  max-width:420px;
+  margin:auto;
 }
+
 :root{
   --bg1:#eef4ff;
   --bg2:#f8fbff;
@@ -52,17 +58,6 @@ margin:auto;
   --shadow:0 16px 36px rgba(36,71,166,0.11);
   --text:#23438d;
   --text-soft:#6f82b0;
-}
-
-html{
-  -webkit-text-size-adjust:100%;
-}
-
-body{
-  margin:0;
-  font-family:'GeekbleMalang','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
-  background:radial-gradient(circle at top, #fbfdff 0%, #edf4ff 42%, #e6eefc 100%);
-  color:#111;
 }
 
 .wrap{
@@ -211,14 +206,14 @@ body{
 }
 
 .grid{
-   display:grid;
+  display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:24px;
   padding:28px;
 }
   
 .card{
-   position:relative;
+  position:relative;
   overflow:hidden;
   background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
   border:1px solid #dbe6ff;
@@ -438,18 +433,20 @@ body{
   align-items:center;
 }
 
-.test-input{
+..test-input{
   flex:1 1 220px;
-  min-height:58px;
+  min-height:48px;
+  height:48px;
   border:1px solid #d7e2ff;
   background:#fff;
-  border-radius:18px;
-  padding:0 18px;
-  font-size:20px;
+  border-radius:16px;
+  padding:0 14px;
+  font-size:17px;
   color:#23438d;
   outline:none;
   box-shadow:0 6px 16px rgba(36,71,166,0.06);
   font-family:'Poppins','GeekbleMalang',sans-serif;
+}
 }
 .test-input:focus{
   border-color:#7aa8ff;
@@ -491,6 +488,21 @@ body{
   background:linear-gradient(180deg,#fff3f8 0%, #ffe2ee 100%);
   color:#b33974;
   border:1px solid #ffbfd8;
+}
+
+.wrong-note{
+  margin-top:8px;
+  font-size:16px;
+  line-height:1.5;
+  word-break:break-word;
+}
+
+.wrong-note.my-answer{
+  color:#b33974;
+}
+
+.wrong-note.correct-answer{
+  color:#2447a6;
 }
 
 .test-result{
@@ -678,7 +690,7 @@ function shuffle(arr){
 }
 
 function normalizeAnswer(str){
- return String(str || "")
+  return String(str || "")
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "")
     .trim();
@@ -1127,7 +1139,12 @@ function handleChoice(choice){
   if(choice === q.answer){
     testState.score += 1;
   }else{
-    testState.wrongRows.push(q.row);
+    testState.wrongRows.push({
+      row: q.row,
+      userAnswer: choice,
+      correctAnswer: q.answer,
+      testType: testState.testType
+    });
   }
 
   renderTest();
@@ -1151,14 +1168,19 @@ function submitSpellingAnswer(){
   if(testState.inputCorrect){
     testState.score += 1;
   }else{
-    testState.wrongRows.push(q.row);
+    testState.wrongRows.push({
+      row: q.row,
+      userAnswer: userInput,
+      correctAnswer: q.answer,
+      testType: testState.testType
+    });
   }
 
   renderTest();
 
   setTimeout(() => {
     goToNextQuestion();
-  }, 900);
+  }, testState.inputCorrect ? 1000 : 3000);
 }
 
 function renderWrongList(){
@@ -1180,13 +1202,15 @@ function renderWrongList(){
 
   app.innerHTML = `
     <div class="word-grid">
-      ${wrongRows.map((row, i) => `
+      ${wrongRows.map((item, i) => `
         <div class="word-card">
           <div class="word-left">
-            <div class="word">${i + 1}. ${escapeHtml(row["영어"])}</div>
-            <div class="meaning">${escapeHtml(row["뜻"])}</div>
+            <div class="word">${i + 1}. ${escapeHtml(item.row["영어"])}</div>
+            <div class="meaning">${escapeHtml(item.row["뜻"])}</div>
+            <div class="wrong-note my-answer">내가 쓴 답: ${escapeHtml(item.userAnswer || "(없음)")}</div>
+            <div class="wrong-note correct-answer">정답: ${escapeHtml(item.correctAnswer || "")}</div>
           </div>
-          <button class="speak-btn" data-type="speak" data-value="${escapeHtml(row["영어"])}">🔊</button>
+          <button class="speak-btn" data-type="speak" data-value="${escapeHtml(item.row["영어"])}">🔊</button>
         </div>
       `).join("")}
     </div>
@@ -1397,7 +1421,7 @@ controls.addEventListener("click", function(e){
   if(action === "submit-spelling"){ submitSpellingAnswer(); return; }
   if(action === "exit-test"){ state.mode = "browse"; render(); return; }
   if(action === "restart-test"){ startTest(testState.testType); return; }
-  if(action === "restart-wrong"){ startTest(testState.testType, testState.wrongRows); return; }
+  if(action === "restart-wrong"){ startTest(testState.testType, testState.wrongRows.map(x => x.row)); return; }
   if(action === "show-wrong-list"){ state.mode = "wrong-list"; render(); return; }
   if(action === "back-result"){ state.mode = "result"; render(); return; }
 });
@@ -1460,7 +1484,7 @@ app.addEventListener("click", async function(e){
     if(action === "submit-spelling"){ submitSpellingAnswer(); return; }
     if(action === "exit-test"){ state.mode = "browse"; render(); return; }
     if(action === "restart-test"){ startTest(testState.testType); return; }
-    if(action === "restart-wrong"){ startTest(testState.testType, testState.wrongRows); return; }
+    if(action === "restart-wrong"){ startTest(testState.testType, testState.wrongRows.map(x => x.row)); return; }
     if(action === "show-wrong-list"){ state.mode = "wrong-list"; render(); return; }
     if(action === "back-result"){ state.mode = "result"; render(); return; }
   }
