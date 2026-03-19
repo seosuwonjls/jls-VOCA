@@ -7,7 +7,7 @@
 
 <link rel="apple-touch-icon" sizes="180x180" href="/jls-VOCA/icons/180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/jls-VOCA/icons/192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/jls-VOCA/icons/512.png">
+<link rel="icon" type="image/png" sizes="512.png">
 <meta name="theme-color" content="#2f6be6">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@ html{
 body{
   font-size:16px;
   margin:0;
-  font-family:'GeekbleMalang','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+  font-family:'GeekbleMalang','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif;
   background:radial-gradient(circle at top, #fbfdff 0%, #edf4ff 42%, #e6eefc 100%);
   color:#111;
 }
@@ -429,27 +429,30 @@ body{
 .test-input-wrap{
   display:flex;
   gap:10px;
-  flex-wrap:wrap;
   align-items:center;
+  background:#f3f7ff;
+  border:1px solid #dbe6ff;
+  border-radius:22px;
+  padding:8px;
+  box-shadow:inset 0 2px 6px rgba(36,71,166,0.06);
 }
 
-..test-input{
+.test-input{
   flex:1 1 220px;
   min-height:52px;
   height:52px;
-  border:1px solid #d7e2ff;
-  background:#fff;
+  border:none;
+  background:#ffffff;
   border-radius:16px;
   padding:0 16px;
   font-size:18px;
   color:#23438d;
   outline:none;
-  box-shadow:0 6px 16px rgba(36,71,166,0.06);
+  box-shadow:0 4px 10px rgba(36,71,166,0.08);
   font-family:'Poppins','GeekbleMalang',sans-serif;
-}
+  width:100%;
 }
 .test-input:focus{
-  border-color:#7aa8ff;
   box-shadow:0 0 0 4px rgba(47,128,237,0.12);
 }
 
@@ -465,9 +468,14 @@ body{
   cursor:pointer;
   box-shadow:0 10px 20px rgba(36,71,166,0.16);
   font-family:'GeekbleMalang','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  padding:0 18px;
+  transition:all .15s ease;
 }
 .test-submit-btn:hover{
   transform:translateY(-1px);
+}
+.test-submit-btn:active{
+  transform:scale(0.97);
 }
 
 .answer-feedback{
@@ -554,8 +562,24 @@ body{
   .speak-btn{width:66px;height:66px;font-size:28px;}
   .choice-grid{grid-template-columns:1fr;}
   .btn{min-height:44px;padding:0 14px;border-radius:16px;font-size:14px;}
-  .test-input-wrap{flex-direction:column;}
-  .test-input,.test-submit-btn{width:100%;}
+  .test-input-wrap{
+    flex-direction:column;
+    padding:6px;
+    border-radius:18px;
+  }
+  .test-input{
+    min-height:48px;
+    height:48px;
+    font-size:17px;
+    border-radius:14px;
+  }
+  .test-submit-btn{
+    width:100%;
+    min-height:48px;
+    height:48px;
+    font-size:16px;
+    border-radius:14px;
+  }
 }
 
 @media (max-width:460px){
@@ -704,9 +728,9 @@ function checkSpelling(userInput, correctAnswer){
 }
 
 function getTestTypeLabel(type){
-  if(type === "eng-to-kor-choices") return "영어 → 뜻";
-  if(type === "kor-to-eng-choices") return "뜻 → 영어";
-  if(type === "kor-to-eng-input") return "뜻 → 스펠링";
+  if(type === "eng-to-kor-choices") return "영어 보고 뜻 고르기";
+  if(type === "kor-to-eng-choices") return "뜻 보고 영어 고르기";
+  if(type === "kor-to-eng-input") return "뜻 보고 스펠링 쓰기";
   return "테스트";
 }
 
@@ -760,9 +784,9 @@ function renderControls(){
     html += `<button class="btn" data-action="back-chapters">← Chapter</button>`;
     html += `<button class="btn" data-action="toggle-meaning">${state.hideMeaning ? "뜻 보이기" : "뜻 숨기기"}</button>`;
     html += `<button class="btn" data-action="toggle-word">${state.hideWord ? "영어 보이기" : "영어 숨기기"}</button>`;
-    html += `<button class="btn" data-action="start-test-eng-kor">영어 → 뜻 테스트</button>`;
-    html += `<button class="btn" data-action="start-test-kor-eng">뜻 → 영어 테스트</button>`;
-    html += `<button class="btn" data-action="start-test-spelling">뜻 → 스펠링 테스트</button>`;
+    html += `<button class="btn" data-action="start-test-eng-kor">영어 보고 뜻 고르기</button>`;
+    html += `<button class="btn" data-action="start-test-kor-eng">뜻 보고 영어 고르기</button>`;
+    html += `<button class="btn" data-action="start-test-spelling">뜻 보고 스펠링 쓰기</button>`;
   }
 
   if(state.chapter && state.mode === "test"){
