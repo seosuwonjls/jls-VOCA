@@ -562,18 +562,25 @@ body{
   .speak-btn{width:66px;height:66px;font-size:28px;}
   .choice-grid{grid-template-columns:1fr;}
   .btn{min-height:44px;padding:0 14px;border-radius:16px;font-size:14px;}
+
   .test-input-wrap{
     flex-direction:column;
     padding:6px;
     border-radius:18px;
+    align-items:stretch;
   }
+
   .test-input{
+    flex:none;
+    width:100%;
     min-height:48px;
     height:48px;
     font-size:17px;
     border-radius:14px;
   }
+
   .test-submit-btn{
+    flex:none;
     width:100%;
     min-height:48px;
     height:48px;
@@ -728,9 +735,9 @@ function checkSpelling(userInput, correctAnswer){
 }
 
 function getTestTypeLabel(type){
-  if(type === "eng-to-kor-choices") return "영어 보고 뜻 고르기";
-  if(type === "kor-to-eng-choices") return "뜻 보고 영어 고르기";
-  if(type === "kor-to-eng-input") return "뜻 보고 스펠링 쓰기";
+  if(type === "eng-to-kor-choices") return "뜻 고르기";
+  if(type === "kor-to-eng-choices") return "영어 고르기";
+  if(type === "kor-to-eng-input") return "스펠링 쓰기";
   return "테스트";
 }
 
@@ -784,9 +791,9 @@ function renderControls(){
     html += `<button class="btn" data-action="back-chapters">← Chapter</button>`;
     html += `<button class="btn" data-action="toggle-meaning">${state.hideMeaning ? "뜻 보이기" : "뜻 숨기기"}</button>`;
     html += `<button class="btn" data-action="toggle-word">${state.hideWord ? "영어 보이기" : "영어 숨기기"}</button>`;
-    html += `<button class="btn" data-action="start-test-eng-kor">영어 보고 뜻 고르기</button>`;
-    html += `<button class="btn" data-action="start-test-kor-eng">뜻 보고 영어 고르기</button>`;
-    html += `<button class="btn" data-action="start-test-spelling">뜻 보고 스펠링 쓰기</button>`;
+    html += `<button class="btn" data-action="start-test-eng-kor">뜻 고르기</button>`;
+    html += `<button class="btn" data-action="start-test-kor-eng">영어 고르기</button>`;
+    html += `<button class="btn" data-action="start-test-spelling">스펠링 쓰기</button>`;
   }
 
   if(state.chapter && state.mode === "test"){
